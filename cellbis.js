@@ -6,28 +6,27 @@
  * Released under the Artistic License 2.0
  *
  */
-(function defineCellbis (global, factory) {
-  if (typeof exports === 'object' && exports && typeof exports.nodeName !== 'string') {
-    factory(exports); // CommonJS
-  }
-  else if (typeof define === 'function' && define.amd) {
-    define(['exports'], factory); // AMD
-  }
-  else {
-    global.CellBIS = {};
-    factory(global.CellBIS); // script, wsh, asp
+(function (global, factory) {
+  
+  "object" === typeof exports && exports && "string" !== typeof exports.nodeName ?
+    factory(exports) : // CommonJS
+      "function" === typeof define && define.amd ?
+        define(["exports"], factory) : // AMD
     
-    // Expose Cellbis, CELLBIS, and cb identifiers
-    global.Cellbis = global.CellBIS;
-    global.CELLBIS = global.CellBIS;
-    global.cellbis = global.CellBIS;
-    global.cb = global.CellBIS;
-  }
-}(this, function cellbisFactory ( cellbis ) {
+      (global.CellBIS = {},
+        factory(global.CellBIS), // script, wsh, asp
+  
+        // Expose Cellbis, CELLBIS, and cb identifiers
+        global.Cellbis = global.CellBIS,
+        global.CELLBIS = global.CellBIS,
+        global.cellbis = global.CellBIS,
+        global.cb = global.CellBIS)
+  
+})(this, function ( cellbis ) {
   "use strict";
   
   /**
-   * A main method for Plugin Utilites :
+   * A main method for Plugin Utilities :
    */
   var Utils = function() {
     this.data = '';
@@ -658,7 +657,7 @@
     }
     
     // if three arguments input
-    if (arguments.length === 3) {
+    if (arguments.length >= 3) {
       
       lexical = arguments[0];
       source = arguments[1];
@@ -667,17 +666,28 @@
       result = defaultCbSub.sub.r_sub();
     }
     
-    // if more then three arguments input
-    // if (arguments.length > 3) {}
-    
     return result;
   };
   
   return cellbis;
-}));
+});
 
 (function () {
-  cb.sub({ html: {} });
   
+  // Anonymous function to generate custom HTML Tag.
+  var html = function() {
+    this.pagination = {};
+    this.form = {};
+    this.table = {};
+  };
+  
+  // Add the "html" object into the CellBIS Global function
+  // to add a new object under the "html" object.
+  cellbis.sub({ html : html.prototype });
+  
+  // Anonymous function to generate pagination page.
+  var pagination = function() {
+  
+  };
   
 })();
