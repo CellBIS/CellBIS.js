@@ -1,5 +1,5 @@
 /*! 
- * CellBIS JavaScript Library v0.0.1
+ * CellBIS JavaScript Library v0.0.1b
  * Date Create : 08 January 2018 11:15 AM
  *
  * Copyright Achmad Yusri Afandi (yusrideb@cpan.org)
@@ -10,12 +10,12 @@
   
   "object" === typeof exports && exports && "string" !== typeof exports.nodeName ?
     factory(exports) : // CommonJS
-      "function" === typeof define && define.amd ?
-        define(["exports"], factory) : // AMD
-    
+    "function" === typeof define && define.amd ?
+      define(["exports"], factory) : // AMD
+      
       (global.CellBIS = {},
         factory(global.CellBIS), // script, wsh, asp
-  
+        
         // Expose Cellbis, CELLBIS, and cb identifiers
         global.Cellbis = global.CellBIS,
         global.CELLBIS = global.CellBIS,
@@ -196,7 +196,7 @@
    * A main method to handle HTML Generator.
    *
    * Prototype of this function consists :
-   * - init           Initializationa function
+   * - init           Initialization function
    * - set_target     Set target dom result of render.
    * - set            To set object DOM, where which to generate HTML.
    * - array_type     This object will be used of "generate" object.
@@ -393,7 +393,14 @@
       while (i < len) {
         if (js_utils.check_is_defined_obj(data_json, prop[i])) {
           tag_attr = prop[i];
-          if (tag_attr !== 'attr' && tag_attr !== 'contents' && tag_attr !== 'tag' && tag_attr !== 'child' && tag_attr !== '') {
+          if (
+            tag_attr !== 'attr' &&
+            tag_attr !== 'contents' &&
+            tag_attr !== 'tag' &&
+            tag_attr !== 'child' &&
+            tag_attr !== ''
+          ) {
+            
             data_attr += tag_attr+'="'+data_json[prop[i]]+'" ';
           }
           if (tag_attr === 'attr') {
@@ -444,7 +451,10 @@
     
     if (this.type_target === 'object') {
       var target = this.target_tag;
-      if (js_utils.check_is_defined_obj(target, 'selector') && js_utils.check_is_defined_obj(target, 'type')) {
+      if (
+        js_utils.check_is_defined_obj(target, 'selector') &&
+        js_utils.check_is_defined_obj(target, 'type')
+      ) {
         var $target_selector;
         var selector = target['selector'];
         var type = target['type'];
@@ -586,7 +596,7 @@
   
   // Little information about this JavaScript Plugin.
   cellbis.name = 'cellbis.js';
-  cellbis.version = '0.0.1';
+  cellbis.version = '0.0.1b';
   
   /**
    * All high-level of function "cellbis.htmlgen.*" use "htmlgen()" function.
@@ -672,22 +682,76 @@
   return cellbis;
 });
 
+// CellBIS HTML UI Custom.
 (function () {
   
-  // Anonymous function to generate custom HTML Tag.
-  var html = function() {
+  // Anonymous function to generate custom UI.
+  var UI = function() {
     this.pagination = {};
     this.form = {};
     this.table = {};
   };
   
+  // Initialization HTML custom UI :
+  UI.prototype.init = function init(config) {
+    // var forPagination = new pagination();
+    // this.pagination = forPagination.init();
+  };
+  
   // Add the "html" object into the CellBIS Global function
   // to add a new object under the "html" object.
-  cellbis.sub({ html : html.prototype });
+  cellbis.sub({
+    UI : {
+      pagination : function() {},
+      form : function() {},
+      table : function() {}
+    }
+  });
+  
+})();
+
+// CellBIS HTML UI Custom - Pagination.
+(function () {
   
   // Anonymous function to generate pagination page.
-  var pagination = function() {
-  
+  var pagination = function () {
+    this.themes = {
+      bootstrap: {
+        name: 'bootstrap',
+        tag: {
+          wrap: 'ul', prev: 'li', next: 'li', page: 'li'
+        },
+        id: {
+          wrap: '', prev: '', next: '', page: ''
+        },
+        class: {
+          wrap: '', prev: '', next: '', page: ''
+        },
+        other_attr: {
+          wrap: '', prev: '', next: '', page: ''
+        }
+      }
+    };
+    this.prev = true;
+    this.next = true;
+    this.amount_pages = 5;
+    this.defaultAmount_pages = 5;
+    this.currentPage = 1;
   };
+  
+  // Prototype for initialization function "pagination"
+  pagination.prototype.init = function init(config) {
+    this.prev = cb.utils.check_is_not_defined_obj(config, 'prev') ? config.prev : this.prev;
+    this.next = cb.utils.check_is_not_defined_obj(config, 'next') ? config.next : this.next;
+    this.amount_pages = cb.utils.check_is_not_defined_obj(config, 'amount_pages') ?
+      config.amount_pages : this.amount_pages;
+    this.defaultAmount_pages = cb.utils.check_is_not_defined_obj(config, 'defaultAmount_pages') ?
+      config.defaultAmount_pages : this.defaultAmount_pages;
+    this.currentPage = cb.utils.check_is_not_defined_obj(config, 'currentPage') ?
+      config.currentPage : this.currentPage;
+  };
+  
+  // Add new theme :
+  pagination.prototype.add_themes = function add_themes(config) {};
   
 })();
