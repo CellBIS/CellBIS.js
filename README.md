@@ -4,3 +4,8 @@ CellBIS JavaScript Library
 
 # Information
 This Library under development
+
+# Development Feature :
+- Pagination
+- Form Generator
+- HTML Table Generator
