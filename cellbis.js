@@ -1,5 +1,5 @@
-/*! 
- * CellBIS JavaScript Library v0.0.1b
+/*!
+ * CellBIS JavaScript Library v0.0.1.beta.2
  * Date Create : 08 January 2018 11:15 AM
  *
  * Copyright Achmad Yusri Afandi (yusrideb@cpan.org)
@@ -88,6 +88,40 @@
   };
   
   /**
+   * To check if property in object is exists
+   * and If not exists return default data.
+   *
+   * @param obj
+   * @param prop
+   * @param for_return
+   * @return {number}
+   */
+  Utils.prototype.check_data_obj = function check_data_obj(obj, prop, for_return) {
+    return (obj[prop] !== undefined && (obj[prop] !== '' || obj[prop] !== "")) ? obj[prop] : for_return;
+  };
+  
+  /**
+   * To compare two object
+   *
+   * @param src
+   * @param target
+   * @param indicator
+   */
+  Utils.prototype.obj_compare = function obj_compare(src, target, indicator) {
+    var new_obj = {};
+    if (typeof src === "object" && typeof target === "object") {
+      if (Array.isArray(indicator)) {
+        for (var i = 0, fornew_keyObj = '', fornew_dataObj = '', length = indicator.length; i < length; i++) {
+          fornew_keyObj = indicator[i];
+          fornew_dataObj = this.check_data_obj(target, fornew_keyObj, src[fornew_keyObj]);
+          new_obj[fornew_keyObj] = fornew_dataObj;
+        }
+      }
+    }
+    return new_obj;
+  };
+  
+  /**
    * To check if data is founded in array
    * This prototype function originally from jQuery.
    *
@@ -118,6 +152,33 @@
     return locProtocol.replace(regex, '');
   };
   
+  /**
+   * To check even number or not.
+   * @param   {number} num
+   * @return  {number}
+   */
+  Utils.prototype.even_num = function even_num(num) { return num % 2; };
+  
+  /**
+   * To return data object from function argument.
+   * @return {{}}
+   */
+  Utils.prototype.reto = function reto() {
+    var len_arg = arguments.length;
+    var obj = {}, value = '';
+    if (len_arg === 1 && typeof arguments[0] === "object" && !Array.isArray(arguments[0])) {
+      obj = arguments[0];
+    }
+    if (len_arg > 1) {
+      for (var i = 0; i < len_arg; i++) {
+        this.even_num(i) === 0 ?
+          obj[arguments[i]] = arguments[(i + 1)] :
+          obj[arguments[(i - 1)]] = arguments[i];
+      }
+    }
+    return obj;
+  };
+  
   // To Use Cellbis Utils in all function if required :
   var js_utils = new Utils();
   
@@ -144,8 +205,7 @@
   
   /**
    * For Get data storage :
-   *
-   * @param   {string}              key
+   ** @param   {string}              key
    * @return  {string | null | *}
    */
   Browser_storage.prototype.get = function get (key) {
@@ -176,7 +236,7 @@
   };
   
   Browser_storage.prototype.clear_with_value = function clear_with_value (size_data) {
-    if (CellBIS_jsUtils.check_is_defined(size_data)) {
+    if (js_utils.check_is_defined(size_data)) {
       var allStrings = '';
       for (var key in window.localStorage) {
         if (window.localStorage.hasOwnProperty(key)) {
@@ -487,12 +547,12 @@
    * A main method to handle Extended function from
    * external javascript.
    */
-  var cellBIS = function () {
+  var cBIS = function () {
     return this;
   };
   
   /**
-   * A function for add sub function in function "cellBIS".
+   * Add prototype "sub" function into function "cBIS".
    *
    * List of sub function :
    * @type {
@@ -504,7 +564,7 @@
    *  }
    * }
    */
-  cellBIS.prototype.sub = {
+  cBIS.prototype.sub = {
     r_sub: function() {
       return this.data_sub;
     },
@@ -594,9 +654,29 @@
     }
   };
   
+  /**
+   * Add Prototype "union" function into cBIS function.
+   * @type {string}
+   */
+  cBIS.prototype.union = {
+    r_obj : function () { return this.data_union },
+    obj : function (src, new_obj) {
+      if (typeof src === "object" && typeof new_obj === "object") {
+        for (var i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
+          prop = key_obj[i];
+          src[prop] = new_obj[prop];
+        }
+        this.data_union = src;
+      } else {
+        this.data_union = {};
+      }
+      return this;
+    }
+  };
+  
   // Little information about this JavaScript Plugin.
   cellbis.name = 'cellbis.js';
-  cellbis.version = '0.0.1b';
+  cellbis.version = '0.0.1.beta.2';
   
   /**
    * All high-level of function "cellbis.htmlgen.*" use "htmlgen()" function.
@@ -605,7 +685,7 @@
    */
   var defaultHtmlGen = new htmlgen();
   
-  // To initilization function.
+  // To initialization function.
   cellbis.hgen = function html_gen(data_json, target) {
     return defaultHtmlGen.init(data_json, target);
   };
@@ -636,8 +716,13 @@
    * All High-level of function to handle added object function.
    * This object similar with jQuery.extend.
    */
-  var defaultCbSub = new cellBIS();
+  var defaultCbSub = new cBIS();
   
+  /**
+   * Add object function "sub" for add sub function into "CellBIS"
+   *
+   * @return {{}}
+   */
   cellbis.sub = function sub () {
     var
       this_obj = this,
@@ -679,13 +764,20 @@
     return result;
   };
   
+  cellbis.union = {
+    object: function (source, new_object) {
+      defaultCbSub.union.obj(source, new_object);
+      return defaultCbSub.union.r_obj();
+    }
+  };
+  
   return cellbis;
 });
 
 // CellBIS HTML UI Custom.
 (function () {
   
-  // Anonymous function to generate custom UI.
+  // Anonymous function to generate custom HTML.
   var UI = function() {
     this.pagination = {};
     this.form = {};
@@ -715,7 +807,23 @@
   
   // Anonymous function to generate pagination page.
   var pagination = function () {
+    
     this.themes = {
+      default: {
+        name: 'default',
+        tag: {
+          wrap: 'ul', prev: 'li', next: 'li', page: 'li'
+        },
+        id: {
+          wrap: '', prev: '', next: '', page: ''
+        },
+        class: {
+          wrap: '', prev: '', next: '', page: ''
+        },
+        other_attr: {
+          wrap: '', prev: '', next: '', page: ''
+        }
+      },
       bootstrap: {
         name: 'bootstrap',
         tag: {
@@ -732,26 +840,115 @@
         }
       }
     };
+    this.config = {
+      first : true,
+      last : true
+    };
+    this.label = {
+      firstPage: 'First',
+      lastPage: 'Last',
+      prev: 'Previous',
+      next: 'Next'
+    };
+    this.first = true;
+    this.last = true;
     this.prev = true;
     this.next = true;
     this.amount_pages = 5;
     this.defaultAmount_pages = 5;
+    this.firstAmount_pages = 5;
     this.currentPage = 1;
+    this.theme_active = 'default';
+    this.method = {};
   };
   
   // Prototype for initialization function "pagination"
   pagination.prototype.init = function init(config) {
-    this.prev = cb.utils.check_is_not_defined_obj(config, 'prev') ? config.prev : this.prev;
-    this.next = cb.utils.check_is_not_defined_obj(config, 'next') ? config.next : this.next;
-    this.amount_pages = cb.utils.check_is_not_defined_obj(config, 'amount_pages') ?
-      config.amount_pages : this.amount_pages;
-    this.defaultAmount_pages = cb.utils.check_is_not_defined_obj(config, 'defaultAmount_pages') ?
-      config.defaultAmount_pages : this.defaultAmount_pages;
-    this.currentPage = cb.utils.check_is_not_defined_obj(config, 'currentPage') ?
-      config.currentPage : this.currentPage;
+    
+    if (config) {
+      this.method = cb.utils().check_is_defined_obj(config, 'method') ? config.method : this.method;
+      this.first = cb.utils().check_is_defined_obj(config, 'firstPage') ? config.firstPage : this.firstPage;
+      this.last = cb.utils().check_is_defined_obj(config, 'lastPage') ? config.lastPage : this.lastPage;
+      this.prev = cb.utils().check_is_defined_obj(config, 'prev') ? config.prev : this.prev;
+      this.next = cb.utils().check_is_defined_obj(config, 'next') ? config.next : this.next;
+      this.amount_pages = cb.utils().check_is_defined_obj(config, 'amount_pages') ?
+        config.amount_pages : this.amount_pages;
+      this.defaultAmount_pages = cb.utils().check_is_defined_obj(config, 'defaultAmount_pages') ?
+        config.defaultAmount_pages : this.defaultAmount_pages;
+      this.firstAmount_pages = cb.utils().check_is_defined_obj(config, 'firstAmount_pages') ?
+        config.firstAmount_pages : this.firstAmount_pages;
+      this.currentPage = cb.utils().check_is_defined_obj(config, 'currentPage') ?
+        config.currentPage : this.currentPage;
+      this.themes = cb.utils().check_is_defined_obj(config, 'themes') ? config.themes : this.themes;
+      this.theme_active = cb.utils().check_is_defined_obj(config, 'theme_active') ? config.theme_active : this.theme_active;
+    }
+    return this;
+  };
+  
+  // Set theme :
+  pagination.prototype.set_theme = function set_theme(theme_name) {
+    if (theme_name && theme_name !== "") {
+      if (cb.utils().check_is_defined_obj(this.themes, theme_name)) {
+        this.theme_active = theme_name;
+      }
+    }
+    return this;
   };
   
   // Add new theme :
-  pagination.prototype.add_themes = function add_themes(config) {};
+  pagination.prototype.add_theme = function add_themes(theme_name, config, validate) {
+    if (typeof config === "object") {
+      var new_theme = {};
+      
+      if (validate) {
+        var for_newConfig = {};
+        
+        // Name Themes :
+        for_newConfig['name'] = (typeof theme_name === "string" ? theme_name : 'undef_theme');
+        
+        // Tag Themes :
+        for_newConfig['tag'] = cb.utils().obj_compare(this.themes.bootstrap.tag, config['tag'],
+          ['wrap', 'prev', 'next', 'page']);
+        
+        // Id Themes :
+        for_newConfig['id'] = cb.utils().obj_compare(this.themes.bootstrap.tag, config['id'],
+          ['wrap', 'prev', 'next', 'page']);
+        
+        // Class Themes :
+        for_newConfig['class'] = cb.utils().obj_compare(this.themes.bootstrap.tag, config['class'],
+          ['wrap', 'prev', 'next', 'page']);
+        
+        // other_attr Themes :
+        for_newConfig['other_attr'] = cb.utils().obj_compare(this.themes.bootstrap.tag, config['other_attr'],
+          ['wrap', 'prev', 'next', 'page']);
+        
+        new_theme[(typeof theme_name === "string" ? theme_name : 'undef_theme')] = for_newConfig;
+        
+      } else {
+        new_theme[(typeof theme_name === "string" ? theme_name : 'undef_theme')] = config;
+      }
+      
+      // Union object "theme" :
+      cb.union.object(this.themes, new_theme);
+      
+      return this;
+    }
+  };
+  
+  // Config Themes :
+  pagination.prototype.config_theme = function config_theme(theme_name, prop_cfg, obj) {
+    if (cb.utils().check_is_defined_obj(this.themes, theme_name)) {
+      if (cb.utils().check_is_defined_obj(obj, prop_cfg)) {
+        if (theme_name !== 'default') {
+          this.themes[theme_name][prop_cfg] = obj;
+        }
+      }
+    }
+    return this;
+  };
+  
+  pagination.prototype.render = function render() {
+  
+  };
   
 })();
