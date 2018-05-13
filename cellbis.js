@@ -22,13 +22,13 @@
         global.cellbis = global.CellBIS,
         global.cb = global.CellBIS)
   
-})(this, function ( cellbis ) {
+})(this, function (cellbis) {
   "use strict";
   
   /**
    * A main method for Plugin Utilities :
    */
-  var Utils = function (for_utils) {
+  let Utils = function (for_utils) {
     this.data = '';
     if (for_utils !== undefined && for_utils !== '') {
       this.data = for_utils;
@@ -41,7 +41,7 @@
    * @param data
    * @return {number}
    */
-  Utils.prototype.check_is_defined = function check_is_defined (data) {
+  Utils.prototype.check_is_defined = function check_is_defined(data) {
     return (data !== undefined && (data !== '' || data !== "")) ? 1 : 0;
   };
   
@@ -51,7 +51,7 @@
    * @param data
    * @return {number}
    */
-  Utils.prototype.check_is_not_defined = function check_is_not_defined (data) {
+  Utils.prototype.check_is_not_defined = function check_is_not_defined(data) {
     return (data === undefined && (data === '' || data === "")) ? 1 : 0;
   };
   
@@ -62,7 +62,7 @@
    * @param prop
    * @return {number}
    */
-  Utils.prototype.check_is_defined_obj = function check_is_defined_obj (obj, prop) {
+  Utils.prototype.check_is_defined_obj = function check_is_defined_obj(obj, prop) {
     return (obj[prop] !== undefined && (obj[prop] !== '' || obj[prop] !== "")) ? 1 : 0;
   };
   
@@ -73,8 +73,8 @@
    * @param prop
    * @return {number}
    */
-  Utils.prototype.check_is_not_defined_obj = function check_is_not_defined_obj (obj, prop) {
-    return (obj[prop] === undefined || obj[prop] === null ||obj[prop] === '' || obj[prop] === "") ? 1 : 0;
+  Utils.prototype.check_is_not_defined_obj = function check_is_not_defined_obj(obj, prop) {
+    return (obj[prop] === undefined || obj[prop] === null || obj[prop] === '' || obj[prop] === "") ? 1 : 0;
   };
   
   /**
@@ -98,10 +98,10 @@
    * @param indicator
    */
   Utils.prototype.obj_combine = function obj_combine(src, target, indicator) {
-    var new_obj = {};
+    let new_obj = {};
     if (typeof src === "object" && typeof target === "object") {
       if (Array.isArray(indicator)) {
-        for (var i = 0, fornew_keyObj = '', fornew_dataObj = '', length = indicator.length; i < length; i++) {
+        for (let i = 0, fornew_keyObj = '', fornew_dataObj = '', length = indicator.length; i < length; i++) {
           fornew_keyObj = indicator[i];
           fornew_dataObj = this.check_data_obj(target, fornew_keyObj, src[fornew_keyObj]);
           new_obj[fornew_keyObj] = fornew_dataObj;
@@ -120,9 +120,9 @@
    * @param prop
    * @return {number}
    */
-  Utils.prototype.inArray = function inArray (elem, arrObj, prop) {
-    var _arr = [];
-    var indexOf = _arr.indexOf;
+  Utils.prototype.inArray = function inArray(elem, arrObj, prop) {
+    let _arr = [];
+    let indexOf = _arr.indexOf;
     return arrObj == null ? -1 : indexOf.call(arrObj, elem, prop);
   };
   
@@ -132,13 +132,13 @@
    * @type {string}
    */
   Utils.prototype.protocol = location.protocol;
-  Utils.prototype.protocol_prod = function protocol_prod () {
-    var locProtocol = this.protocol;
-    return (locProtocol.match(/http/)) ? 'http://' : locProtocol+'//'
+  Utils.prototype.protocol_prod = function protocol_prod() {
+    let locProtocol = this.protocol;
+    return (locProtocol.match(/http/)) ? 'http://' : locProtocol + '//'
   };
   Utils.prototype.protocol_string = function protocol_string() {
-    var locProtocol = this.protocol;
-    var regex = /\:/g;
+    let locProtocol = this.protocol;
+    let regex = /\:/g;
     return locProtocol.replace(regex, '');
   };
   
@@ -147,20 +147,22 @@
    * @param   {number} num
    * @return  {number}
    */
-  Utils.prototype.even_num = function even_num(num) { return num % 2; };
+  Utils.prototype.even_num = function even_num(num) {
+    return num % 2;
+  };
   
   /**
    * To return data object from function argument.
    * @return {{}}
    */
   Utils.prototype.reto = function reto() {
-    var len_arg = arguments.length;
-    var obj = {}, value = '';
+    let len_arg = arguments.length;
+    let obj = {}, value = '';
     if (len_arg === 1 && typeof arguments[0] === "object" && !Array.isArray(arguments[0])) {
       obj = arguments[0];
     }
     if (len_arg > 1) {
-      for (var i = 0; i < len_arg; i++) {
+      for (let i = 0; i < len_arg; i++) {
         this.even_num(i) === 0 ?
           obj[arguments[i]] = arguments[(i + 1)] :
           obj[arguments[(i - 1)]] = arguments[i];
@@ -170,12 +172,12 @@
   };
   
   // To Use Cellbis Utils in all function if required :
-  var js_utils = new Utils();
+  let js_utils = new Utils();
   
   /**
    * A main method for Browser Storage/Cache
    */
-  var Browser_storage = function() {
+  let Browser_storage = function () {
     this.local_data = localStorage;
     return this;
   };
@@ -186,9 +188,9 @@
    * @param {string}    key
    * @param {string}    value
    */
-  Browser_storage.prototype.add = function add (key, value) {
+  Browser_storage.prototype.add = function add(key, value) {
     if (this.local_data) {
-      var data_value = (typeof value === "object") ? JSON.stringify(value) : value;
+      let data_value = (typeof value === "object") ? JSON.stringify(value) : value;
       this.local_data.setItem(key, data_value);
     }
   };
@@ -198,42 +200,42 @@
    ** @param   {string}              key
    * @return  {string | null | *}
    */
-  Browser_storage.prototype.get = function get (key) {
+  Browser_storage.prototype.get = function get(key) {
     if (this.local_data) {
       this.data_store = this.local_data.getItem(key);
       return this.data_store;
     }
   };
   
-  Browser_storage.prototype.getAll = function getAll () {
+  Browser_storage.prototype.getAll = function getAll() {
     if (this.local_data) {
       return this.data_store;
     }
   };
   
-  Browser_storage.prototype.Delete = function Delete (key) {
+  Browser_storage.prototype.Delete = function Delete(key) {
     if (this.local_data) {
       this.local_data.removeItem(key);
     }
     return this;
   };
   
-  Browser_storage.prototype.clear = function clear () {
+  Browser_storage.prototype.clear = function clear() {
     if (localStorage) {
       localStorage.clear();
     }
     return this;
   };
   
-  Browser_storage.prototype.clear_with_value = function clear_with_value (size_data) {
+  Browser_storage.prototype.clear_with_value = function clear_with_value(size_data) {
     if (js_utils.check_is_defined(size_data)) {
-      var allStrings = '';
-      for (var key in window.localStorage) {
+      let allStrings = '';
+      for (let key in window.localStorage) {
         if (window.localStorage.hasOwnProperty(key)) {
           allStrings += window.localStorage[key];
         }
       }
-      var r_cache = allStrings ? 3 + ((allStrings.length * 16) / (8 * 1024)) : 0;
+      let r_cache = allStrings ? 3 + ((allStrings.length * 16) / (8 * 1024)) : 0;
       
       if (r_cache >= size_data) {
         /** Clear all data storage */
@@ -254,7 +256,7 @@
    * - render         To get result of generator HTML.
    *
    */
-  var htmlgen = function () {
+  let htmlgen = function () {
     this.tag_singleton = [
       'input',
       'img',
@@ -292,7 +294,7 @@
    * @param {string|object}   target
    * @return {htmlgen}
    */
-  htmlgen.prototype.init = function init (data_json, target) {
+  htmlgen.prototype.init = function init(data_json, target) {
     
     // For Target Tag :
     if (js_utils.check_is_defined(target)) {
@@ -325,7 +327,7 @@
    * @param   {string|object}   target
    * @return {htmlgen}
    */
-  htmlgen.prototype.set_target = function set_target (target) {
+  htmlgen.prototype.set_target = function set_target(target) {
     
     // For Target Tag :
     if (js_utils.check_is_defined(target)) {
@@ -349,7 +351,7 @@
    * @param   {object}            data_json
    * @return {htmlgen}
    */
-  htmlgen.prototype.set = function set (data_json) {
+  htmlgen.prototype.set = function set(data_json) {
     
     if (js_utils.check_is_defined(data_json) && typeof data_json === "object") {
       if (Array.isArray(data_json)) {
@@ -383,13 +385,13 @@
    * @param data_json
    * @return {string}
    */
-  htmlgen.prototype.array_type = function(data_json) {
+  htmlgen.prototype.array_type = function (data_json) {
     
-    var data_tag = '';
+    let data_tag = '';
     
     if (data_json.length > 1) {
-      var i = 0;
-      var until = data_json.length;
+      let i = 0;
+      let until = data_json.length;
       while (i < until) {
         data_tag += this.generate(data_json[i]);
         i++;
@@ -427,19 +429,19 @@
    * @param data_json
    * @return {string}
    */
-  htmlgen.prototype.generate = function generate (data_json) {
-    var result = '';
+  htmlgen.prototype.generate = function generate(data_json) {
+    let result = '';
     
     if (js_utils.check_is_defined_obj(data_json, 'tag')) {
       
       // Declare variable :
-      var prop = Object.keys(data_json);
-      var i = 0, len = prop.length;
-      var tag_attr;
-      var data_attr = '';
+      let prop = Object.keys(data_json);
+      let i = 0, len = prop.length;
+      let tag_attr;
+      let data_attr = '';
       
       // To Check if tag is "Singleton"
-      var tag_name = data_json['tag'];
+      let tag_name = data_json['tag'];
       while (i < len) {
         if (js_utils.check_is_defined_obj(data_json, prop[i])) {
           tag_attr = prop[i];
@@ -451,7 +453,7 @@
             tag_attr !== ''
           ) {
             
-            data_attr += tag_attr+'="'+data_json[prop[i]]+'" ';
+            data_attr += tag_attr + '="' + data_json[prop[i]] + '" ';
           }
           if (tag_attr === 'attr') {
             data_attr += data_json[prop[i]]
@@ -461,9 +463,9 @@
       }
       
       if (js_utils.inArray(tag_name, this.tag_singleton) !== -1) {
-        result = '<'+tag_name+' '+data_attr+'/>'
+        result = '<' + tag_name + ' ' + data_attr + '/>'
       } else {
-        result = '<'+tag_name+' '+data_attr+'>'+'';
+        result = '<' + tag_name + ' ' + data_attr + '>' + '';
         
         if (js_utils.check_is_defined_obj(data_json, 'contents')) {
           if (js_utils.check_is_defined_obj(data_json, 'child')) {
@@ -482,7 +484,7 @@
           }
         }
         
-        result += '</'+tag_name+'>';
+        result += '</' + tag_name + '>';
       }
     } else {
       console.log('property "tag" is undefined')
@@ -496,18 +498,18 @@
    *
    * @return {*}
    */
-  htmlgen.prototype.render = function render () {
-    var result;
+  htmlgen.prototype.render = function render() {
+    let result;
     
     if (this.type_target === 'object') {
-      var target = this.target_tag;
+      let target = this.target_tag;
       if (
         js_utils.check_is_defined_obj(target, 'selector') &&
         js_utils.check_is_defined_obj(target, 'type')
       ) {
-        var $target_selector;
-        var selector = target['selector'];
-        var type = target['type'];
+        let $target_selector;
+        let selector = target['selector'];
+        let type = target['type'];
         $target_selector = document.querySelector(selector);
         if (type === 'append') {
           $target_selector.insertAdjacentHTML('beforeend', this.data_html);
@@ -521,8 +523,8 @@
       }
     } else {
       if (js_utils.check_is_defined(this.type_target)) {
-        // var target1 = this.target_tag;
-        var $target_selector1 = document.querySelector(this.target_tag);
+        // let target1 = this.target_tag;
+        let $target_selector1 = document.querySelector(this.target_tag);
         $target_selector1.innerHTML = this.data_html;
         result = 1;
       } else {
@@ -537,7 +539,7 @@
    * A main method to handle Extended function from
    * external javascript.
    */
-  var cBIS = function () {
+  let cBIS = function () {
     return this;
   };
   
@@ -561,7 +563,7 @@
     arg1: function (obj, new_obj) {
       if (typeof new_obj === "object") {
         if (js_utils.check_is_not_defined_obj(obj, new_obj)) {
-          for (var i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
+          for (let i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
             prop = key_obj[i];
             obj[prop] = new_obj[prop];
           }
@@ -574,7 +576,7 @@
       if (typeof src === "object" && typeof target === "object") {
         
         // For "target" argument :
-        for (var a = 0, key_target = Object.keys(target), prop; a < key_target.length; a++) {
+        for (let a = 0, key_target = Object.keys(target), prop; a < key_target.length; a++) {
           prop = key_target[a];
           if (js_utils.check_is_not_defined_obj(src, prop)) {
             src[prop] = target[prop];
@@ -582,7 +584,7 @@
         }
         
         // For "src" argument :
-        for (var b = 0, key_src = Object.keys(src); b < key_src.length; b++) {
+        for (let b = 0, key_src = Object.keys(src), prop; b < key_src.length; b++) {
           prop = key_src[b];
           if (js_utils.check_is_not_defined_obj(obj, prop)) {
             obj[prop] = src[prop];
@@ -598,7 +600,7 @@
       if (typeof lexical === "object" && typeof src === "object" && typeof target === "object") {
         
         // For merge "target" and "src" argument :
-        for (var a = 0, key_target = Object.keys(target), prop; a < key_target.length; a++) {
+        for (let a = 0, key_target = Object.keys(target), prop; a < key_target.length; a++) {
           prop = key_target[a];
           if (js_utils.check_is_not_defined_obj(src, prop)) {
             src[prop] = target[prop];
@@ -606,7 +608,7 @@
         }
         
         // For merge "src" and "lexical" argument :
-        for (var b = 0, key_src = Object.keys(src); b < key_src.length; b++) {
+        for (let b = 0, key_src = Object.keys(src), prop; b < key_src.length; b++) {
           prop = key_src[b];
           if (js_utils.check_is_not_defined_obj(lexical, prop)) {
             lexical[prop] = src[prop];
@@ -614,7 +616,7 @@
         }
         
         // For merge "lexical" to "obj" argument :
-        for (var c = 0, key_temp = Object.keys(lexical); c < key_temp.length; c++) {
+        for (let c = 0, key_temp = Object.keys(lexical), prop; c < key_temp.length; c++) {
           prop = key_temp[c];
           lexical = typeof lexical === "object" && (Object.keys(lexical).length) !== 0 ? lexical : {};
           if (js_utils.check_is_not_defined_obj(obj, prop)) {
@@ -627,13 +629,13 @@
       return this;
     },
     argU: function () {
-      var obj = arguments[0];
+      let obj = arguments[0];
       arguments.shift();
       
-      for (var a = 0, input; a < arguments.length; a++) {
+      for (let a = 0, input; a < arguments.length; a++) {
         input = arguments[a];
         if (typeof input === "object") {
-          for (var b = 0, prop, value, key_input = Object.keys(input); b < key_input.length; b++) {
+          for (let b = 0, prop, value, key_input = Object.keys(input); b < key_input.length; b++) {
             prop = key_input[b];
             obj[prop] = input[prop];
           }
@@ -649,10 +651,12 @@
    * @type {string}
    */
   cBIS.prototype.union = {
-    r_obj : function () { return this.data_union },
-    obj : function (src, new_obj) {
+    r_obj: function () {
+      return this.data_union
+    },
+    obj: function (src, new_obj) {
       if (typeof src === "object" && typeof new_obj === "object") {
-        for (var i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
+        for (let i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
           prop = key_obj[i];
           src[prop] = new_obj[prop];
         }
@@ -673,7 +677,7 @@
    *
    * @type {htmlgen}
    */
-  var defaultHtmlGen = new htmlgen();
+  let defaultHtmlGen = new htmlgen();
   
   // To initialization function.
   cellbis.hgen = function html_gen(data_json, target) {
@@ -687,10 +691,10 @@
    * All high-level of function "cellbis.browser_cache.*" use "Browser_storage()" function
    * @type {Browser_storage}
    */
-  var defaultBrowser_cache = new Browser_storage();
+  let defaultBrowser_cache = new Browser_storage();
   
   // For initialization CellBIS Browser Storage/Cache :
-  cellbis.browser_cache = function browser_cache () {
+  cellbis.browser_cache = function browser_cache() {
     return defaultBrowser_cache;
   };
   
@@ -698,15 +702,15 @@
    * All High-level of function to handle added object function.
    * This object similar with jQuery.extend.
    */
-  var defaultCbSub = new cBIS();
+  let defaultCbSub = new cBIS();
   
   /**
    * Add object function "sub" for add sub function into "CellBIS"
    *
    * @return {{}}
    */
-  cellbis.sub = function sub () {
-    var
+  cellbis.sub = function sub() {
+    let
       this_obj = this,
       lexical = {},
       source = {},
@@ -760,7 +764,7 @@
 (function () {
   
   // Anonymous function to generate custom HTML.
-  var UI = function() {
+  let UI = function () {
     this.pagination = {};
     this.form = {};
     this.table = {};
@@ -768,7 +772,7 @@
   
   // Initialization HTML custom UI :
   UI.prototype.init = function init(config) {
-    // var forPagination = new pagination();
+    // let forPagination = new pagination();
     // this.pagination = forPagination.init();
   };
   
@@ -776,13 +780,17 @@
   // to add a new object under the "html" object.
   cellbis.sub({
     UI: {
-      pagination : function() {},
-      paginationType : {},
-      form : function() {},
-      table : function() {}
+      pagination: function () {
+      },
+      paginationType: {},
+      form: function () {
+      },
+      table: function () {
+      }
     },
     Com: {
-      fileUpload: function() {}
+      fileUpload: function () {
+      }
     }
   });
   
@@ -792,7 +800,7 @@
 (function () {
   
   // Anonymous function to generate pagination page.
-  var pagination = function () {
+  let pagination = function () {
     
     this.themes = {
       default: {
@@ -827,8 +835,8 @@
       }
     };
     this.config = {
-      first : true,
-      last : true
+      first: true,
+      last: true
     };
     this.label = {
       firstPage: 'First',
@@ -884,10 +892,10 @@
   // Add new theme :
   pagination.prototype.add_theme = function add_themes(theme_name, config, validate) {
     if (typeof config === "object") {
-      var new_theme = {};
+      let new_theme = {};
       
       if (validate) {
-        var for_newConfig = {};
+        let for_newConfig = {};
         
         // Name Themes :
         for_newConfig['name'] = (typeof theme_name === "string" ? theme_name : 'undef_theme');
