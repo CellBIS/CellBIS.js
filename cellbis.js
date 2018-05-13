@@ -28,148 +28,143 @@
   /**
    * A main method for Plugin Utilities :
    */
-  let Utils = function (for_utils) {
-    this.data = '';
-    if (for_utils !== undefined && for_utils !== '') {
-      this.data = for_utils;
+  class Utils {
+    constructor (for_utils) {
+      this.data = '';
+      if (for_utils !== undefined && for_utils !== '') {
+        this.data = for_utils;
+      }
+      
+      // For URL Protocol
+      this.protocol = location.protocol;
+      let locProtocol = this.protocol;
+      this.protocol_prod = locProtocol.match(/http/) ? 'http://' : this.protocol + '//';
+      
+      // For  URL protocol string :
+      let regexProtoString = /\:/g;
+      this.protocol_string = locProtocol.replace(regexProtoString, '');
     }
-  };
-  
-  /**
-   * To check if variable is defined
-   *
-   * @param data
-   * @return {number}
-   */
-  Utils.prototype.check_is_defined = function check_is_defined(data) {
-    return (data !== undefined && (data !== '' || data !== "")) ? 1 : 0;
-  };
-  
-  /**
-   * To check if variable is not defined
-   *
-   * @param data
-   * @return {number}
-   */
-  Utils.prototype.check_is_not_defined = function check_is_not_defined(data) {
-    return (data === undefined && (data === '' || data === "")) ? 1 : 0;
-  };
-  
-  /**
-   * To check if variable object is defined
-   *
-   * @param obj
-   * @param prop
-   * @return {number}
-   */
-  Utils.prototype.check_is_defined_obj = function check_is_defined_obj(obj, prop) {
-    return (obj[prop] !== undefined && (obj[prop] !== '' || obj[prop] !== "")) ? 1 : 0;
-  };
-  
-  /**
-   * To check if variable object is not defined
-   *
-   * @param obj
-   * @param prop
-   * @return {number}
-   */
-  Utils.prototype.check_is_not_defined_obj = function check_is_not_defined_obj(obj, prop) {
-    return (obj[prop] === undefined || obj[prop] === null || obj[prop] === '' || obj[prop] === "") ? 1 : 0;
-  };
-  
-  /**
-   * To check if property in object is exists
-   * and If not exists return default data.
-   *
-   * @param obj
-   * @param prop
-   * @param for_return
-   * @return {number}
-   */
-  Utils.prototype.check_data_obj = function check_data_obj(obj, prop, for_return) {
-    return (obj[prop] !== undefined && (obj[prop] !== '' || obj[prop] !== "")) ? obj[prop] : for_return;
-  };
-  
-  /**
-   * To compare two object
-   *
-   * @param src
-   * @param target
-   * @param indicator
-   */
-  Utils.prototype.obj_combine = function obj_combine(src, target, indicator) {
-    let new_obj = {};
-    if (typeof src === "object" && typeof target === "object") {
-      if (Array.isArray(indicator)) {
-        for (let i = 0, fornew_keyObj = '', fornew_dataObj = '', length = indicator.length; i < length; i++) {
-          fornew_keyObj = indicator[i];
-          fornew_dataObj = this.check_data_obj(target, fornew_keyObj, src[fornew_keyObj]);
-          new_obj[fornew_keyObj] = fornew_dataObj;
+    
+    /**
+     * To check if variable is defined
+     *
+     * @param data
+     * @return {number}
+     */
+    check_is_defined(data) {
+      return (data !== undefined && (data !== '' || data !== "")) ? 1 : 0;
+    }
+    
+    /**
+     * To check if variable is not defined
+     *
+     * @param data
+     * @return {number}
+     */
+    check_is_not_defined(data) {
+      return (data === undefined && (data === '' || data === "")) ? 1 : 0;
+    }
+    
+    /**
+     * To check if variable object is defined
+     *
+     * @param obj
+     * @param prop
+     * @return {number}
+     */
+    check_is_defined_obj(obj, prop) {
+      return (obj[prop] !== undefined && (obj[prop] !== '' || obj[prop] !== "")) ? 1 : 0;
+    };
+    
+    /**
+     * To check if variable object is not defined
+     *
+     * @param obj
+     * @param prop
+     * @return {number}
+     */
+    check_is_not_defined_obj(obj, prop) {
+      return (obj[prop] === undefined || obj[prop] === null || obj[prop] === '' || obj[prop] === "") ? 1 : 0;
+    };
+    
+    /**
+     * To check if property in object is exists
+     * and If not exists return default data.
+     *
+     * @param obj
+     * @param prop
+     * @param for_return
+     * @return {number}
+     */
+    check_data_obj(obj, prop, for_return) {
+      return (obj[prop] !== undefined && (obj[prop] !== '' || obj[prop] !== "")) ? obj[prop] : for_return;
+    };
+    
+    /**
+     * To compare two object
+     *
+     * @param src
+     * @param target
+     * @param indicator
+     */
+    obj_combine(src, target, indicator) {
+      let new_obj = {};
+      if (typeof src === "object" && typeof target === "object") {
+        if (Array.isArray(indicator)) {
+          for (let i = 0, fornew_keyObj = '', fornew_dataObj = '', length = indicator.length; i < length; i++) {
+            fornew_keyObj = indicator[i];
+            fornew_dataObj = this.check_data_obj(target, fornew_keyObj, src[fornew_keyObj]);
+            new_obj[fornew_keyObj] = fornew_dataObj;
+          }
         }
       }
-    }
-    return new_obj;
-  };
-  
-  /**
-   * To check if data is founded in array
-   * This prototype function originally from jQuery.
-   *
-   * @param elem
-   * @param arrObj
-   * @param prop
-   * @return {number}
-   */
-  Utils.prototype.inArray = function inArray(elem, arrObj, prop) {
-    let _arr = [];
-    let indexOf = _arr.indexOf;
-    return arrObj == null ? -1 : indexOf.call(arrObj, elem, prop);
-  };
-  
-  /**
-   * To get protocol which accessed.
-   *
-   * @type {string}
-   */
-  Utils.prototype.protocol = location.protocol;
-  Utils.prototype.protocol_prod = function protocol_prod() {
-    let locProtocol = this.protocol;
-    return (locProtocol.match(/http/)) ? 'http://' : locProtocol + '//'
-  };
-  Utils.prototype.protocol_string = function protocol_string() {
-    let locProtocol = this.protocol;
-    let regex = /\:/g;
-    return locProtocol.replace(regex, '');
-  };
-  
-  /**
-   * To check even number or not.
-   * @param   {number} num
-   * @return  {number}
-   */
-  Utils.prototype.even_num = function even_num(num) {
-    return num % 2;
-  };
-  
-  /**
-   * To return data object from function argument.
-   * @return {{}}
-   */
-  Utils.prototype.reto = function reto() {
-    let len_arg = arguments.length;
-    let obj = {}, value = '';
-    if (len_arg === 1 && typeof arguments[0] === "object" && !Array.isArray(arguments[0])) {
-      obj = arguments[0];
-    }
-    if (len_arg > 1) {
-      for (let i = 0; i < len_arg; i++) {
-        this.even_num(i) === 0 ?
-          obj[arguments[i]] = arguments[(i + 1)] :
-          obj[arguments[(i - 1)]] = arguments[i];
+      return new_obj;
+    };
+    
+    /**
+     * To check if data is founded in array
+     * This prototype function originally from jQuery.
+     *
+     * @param elem
+     * @param arrObj
+     * @param prop
+     * @return {number}
+     */
+    inArray(elem, arrObj, prop) {
+      let _arr = [];
+      let indexOf = _arr.indexOf;
+      return arrObj == null ? -1 : indexOf.call(arrObj, elem, prop);
+    };
+    
+    /**
+     * To check even number or not.
+     * @param   {number} num
+     * @return  {number}
+     */
+    even_num(num) {
+      return num % 2;
+    };
+    
+    /**
+     * To return data object from function argument.
+     * @return {{}}
+     */
+    reto() {
+      let len_arg = arguments.length;
+      let obj = {}, value = '';
+      if (len_arg === 1 && typeof arguments[0] === "object" && !Array.isArray(arguments[0])) {
+        obj = arguments[0];
       }
-    }
-    return obj;
-  };
+      if (len_arg > 1) {
+        for (let i = 0; i < len_arg; i++) {
+          Utils.even_num(i) === 0 ?
+            obj[arguments[i]] = arguments[(i + 1)] :
+            obj[arguments[(i - 1)]] = arguments[i];
+        }
+      }
+      return obj;
+    };
+  }
   
   // To Use Cellbis Utils in all function if required :
   let js_utils = new Utils();
