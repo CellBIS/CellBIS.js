@@ -557,10 +557,10 @@
    * }
    */
   cBIS.prototype.sub = {
-    r_sub: function () {
+    r_sub() {
       return this.data_sub;
     },
-    arg1: function (obj, new_obj) {
+    arg1(obj, new_obj) {
       if (typeof new_obj === "object") {
         if (js_utils.check_is_not_defined_obj(obj, new_obj)) {
           for (let i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
@@ -572,7 +572,7 @@
       }
       return this;
     },
-    arg2: function (obj, src, target) {
+    arg2(obj, src, target) {
       if (typeof src === "object" && typeof target === "object") {
         
         // For "target" argument :
@@ -595,7 +595,7 @@
       }
       return this;
     },
-    arg3: function (obj, lexical, src, target) {
+    arg3(obj, lexical, src, target) {
       
       if (typeof lexical === "object" && typeof src === "object" && typeof target === "object") {
         
@@ -628,7 +628,7 @@
       }
       return this;
     },
-    argU: function () {
+    argU() {
       let obj = arguments[0];
       arguments.shift();
       
@@ -651,10 +651,10 @@
    * @type {string}
    */
   cBIS.prototype.union = {
-    r_obj: function () {
+    r_obj() {
       return this.data_union
     },
-    obj: function (src, new_obj) {
+    obj(src, new_obj) {
       if (typeof src === "object" && typeof new_obj === "object") {
         for (let i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
           prop = key_obj[i];
@@ -751,7 +751,7 @@
   };
   
   cellbis.union = {
-    object: function (source, new_object) {
+    object (source, new_object) {
       defaultCbSub.union.obj(source, new_object);
       return defaultCbSub.union.r_obj();
     }
@@ -780,16 +780,13 @@
   // to add a new object under the "html" object.
   cellbis.sub({
     UI: {
-      pagination: function () {
-      },
+      pagination() {},
       paginationType: {},
-      form: function () {
-      },
-      table: function () {
-      }
+      form() {},
+      table() {}
     },
     Com: {
-      fileUpload: function () {
+      fileUpload() {
       }
     }
   });
