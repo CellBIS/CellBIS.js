@@ -28,21 +28,11 @@
   /**
    * A main method for Plugin Utilities :
    */
-  var Utils = function() {
+  var Utils = function (for_utils) {
     this.data = '';
-  };
-  
-  /**
-   * To check if
-   *
-   * @param for_utils
-   * @return {Utils}
-   */
-  Utils.prototype.init = function init (for_utils) {
     if (for_utils !== undefined && for_utils !== '') {
       this.data = for_utils;
     }
-    return this;
   };
   
   /**
@@ -107,7 +97,7 @@
    * @param target
    * @param indicator
    */
-  Utils.prototype.obj_compare = function obj_compare(src, target, indicator) {
+  Utils.prototype.obj_combine = function obj_combine(src, target, indicator) {
     var new_obj = {};
     if (typeof src === "object" && typeof target === "object") {
       if (Array.isArray(indicator)) {
@@ -565,10 +555,10 @@
    * }
    */
   cBIS.prototype.sub = {
-    r_sub: function() {
+    r_sub: function () {
       return this.data_sub;
     },
-    arg1: function(obj, new_obj) {
+    arg1: function (obj, new_obj) {
       if (typeof new_obj === "object") {
         if (js_utils.check_is_not_defined_obj(obj, new_obj)) {
           for (var i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
@@ -584,7 +574,7 @@
       if (typeof src === "object" && typeof target === "object") {
         
         // For "target" argument :
-        for ( var a = 0, key_target = Object.keys(target), prop; a < key_target.length; a++) {
+        for (var a = 0, key_target = Object.keys(target), prop; a < key_target.length; a++) {
           prop = key_target[a];
           if (js_utils.check_is_not_defined_obj(src, prop)) {
             src[prop] = target[prop];
@@ -592,7 +582,7 @@
         }
         
         // For "src" argument :
-        for (var b = 0, key_src = Object.keys(src); b <  key_src.length; b++) {
+        for (var b = 0, key_src = Object.keys(src); b < key_src.length; b++) {
           prop = key_src[b];
           if (js_utils.check_is_not_defined_obj(obj, prop)) {
             obj[prop] = src[prop];
@@ -608,7 +598,7 @@
       if (typeof lexical === "object" && typeof src === "object" && typeof target === "object") {
         
         // For merge "target" and "src" argument :
-        for ( var a = 0, key_target = Object.keys(target), prop; a < key_target.length; a++) {
+        for (var a = 0, key_target = Object.keys(target), prop; a < key_target.length; a++) {
           prop = key_target[a];
           if (js_utils.check_is_not_defined_obj(src, prop)) {
             src[prop] = target[prop];
@@ -616,7 +606,7 @@
         }
         
         // For merge "src" and "lexical" argument :
-        for (var b = 0, key_src = Object.keys(src); b <  key_src.length; b++) {
+        for (var b = 0, key_src = Object.keys(src); b < key_src.length; b++) {
           prop = key_src[b];
           if (js_utils.check_is_not_defined_obj(lexical, prop)) {
             lexical[prop] = src[prop];
@@ -655,7 +645,7 @@
   };
   
   /**
-   * Add Prototype "union" function into cBIS function.
+   * Add Prototype "union" function into CellBIS function.
    * @type {string}
    */
   cBIS.prototype.union = {
@@ -690,16 +680,8 @@
     return defaultHtmlGen.init(data_json, target);
   };
   
-  /**
-   * All high-level of function "cellbis.utils.*" use "Utils()" function.
-   * @type {Utils}
-   */
-  var defaultUtils = new Utils();
-  
   // For initialization CellBIS Utils.
-  cellbis.utils = function utils (for_utils) {
-    return defaultUtils.init(for_utils);
-  };
+  cellbis.utils = new Utils();
   
   /**
    * All high-level of function "cellbis.browser_cache.*" use "Browser_storage()" function
@@ -793,10 +775,14 @@
   // Add the "html" object into the CellBIS Global function
   // to add a new object under the "html" object.
   cellbis.sub({
-    UI : {
+    UI: {
       pagination : function() {},
+      paginationType : {},
       form : function() {},
       table : function() {}
+    },
+    Com: {
+      fileUpload: function() {}
     }
   });
   
@@ -866,21 +852,21 @@
   pagination.prototype.init = function init(config) {
     
     if (config) {
-      this.method = cb.utils().check_is_defined_obj(config, 'method') ? config.method : this.method;
-      this.first = cb.utils().check_is_defined_obj(config, 'firstPage') ? config.firstPage : this.firstPage;
-      this.last = cb.utils().check_is_defined_obj(config, 'lastPage') ? config.lastPage : this.lastPage;
-      this.prev = cb.utils().check_is_defined_obj(config, 'prev') ? config.prev : this.prev;
-      this.next = cb.utils().check_is_defined_obj(config, 'next') ? config.next : this.next;
-      this.amount_pages = cb.utils().check_is_defined_obj(config, 'amount_pages') ?
+      this.method = cb.utils.check_is_defined_obj(config, 'method') ? config.method : this.method;
+      this.first = cb.utils.check_is_defined_obj(config, 'firstPage') ? config.firstPage : this.firstPage;
+      this.last = cb.utils.check_is_defined_obj(config, 'lastPage') ? config.lastPage : this.lastPage;
+      this.prev = cb.utils.check_is_defined_obj(config, 'prev') ? config.prev : this.prev;
+      this.next = cb.utils.check_is_defined_obj(config, 'next') ? config.next : this.next;
+      this.amount_pages = cb.utils.check_is_defined_obj(config, 'amount_pages') ?
         config.amount_pages : this.amount_pages;
-      this.defaultAmount_pages = cb.utils().check_is_defined_obj(config, 'defaultAmount_pages') ?
+      this.defaultAmount_pages = cb.utils.check_is_defined_obj(config, 'defaultAmount_pages') ?
         config.defaultAmount_pages : this.defaultAmount_pages;
-      this.firstAmount_pages = cb.utils().check_is_defined_obj(config, 'firstAmount_pages') ?
+      this.firstAmount_pages = cb.utils.check_is_defined_obj(config, 'firstAmount_pages') ?
         config.firstAmount_pages : this.firstAmount_pages;
-      this.currentPage = cb.utils().check_is_defined_obj(config, 'currentPage') ?
+      this.currentPage = cb.utils.check_is_defined_obj(config, 'currentPage') ?
         config.currentPage : this.currentPage;
-      this.themes = cb.utils().check_is_defined_obj(config, 'themes') ? config.themes : this.themes;
-      this.theme_active = cb.utils().check_is_defined_obj(config, 'theme_active') ? config.theme_active : this.theme_active;
+      this.themes = cb.utils.check_is_defined_obj(config, 'themes') ? config.themes : this.themes;
+      this.theme_active = cb.utils.check_is_defined_obj(config, 'theme_active') ? config.theme_active : this.theme_active;
     }
     return this;
   };
@@ -888,7 +874,7 @@
   // Set theme :
   pagination.prototype.set_theme = function set_theme(theme_name) {
     if (theme_name && theme_name !== "") {
-      if (cb.utils().check_is_defined_obj(this.themes, theme_name)) {
+      if (cb.utils.check_is_defined_obj(this.themes, theme_name)) {
         this.theme_active = theme_name;
       }
     }
@@ -907,19 +893,19 @@
         for_newConfig['name'] = (typeof theme_name === "string" ? theme_name : 'undef_theme');
         
         // Tag Themes :
-        for_newConfig['tag'] = cb.utils().obj_compare(this.themes.bootstrap.tag, config['tag'],
+        for_newConfig['tag'] = cb.utils.obj_combine(this.themes.bootstrap.tag, config['tag'],
           ['wrap', 'prev', 'next', 'page']);
         
         // Id Themes :
-        for_newConfig['id'] = cb.utils().obj_compare(this.themes.bootstrap.tag, config['id'],
+        for_newConfig['id'] = cb.utils.obj_combine(this.themes.bootstrap.tag, config['id'],
           ['wrap', 'prev', 'next', 'page']);
         
         // Class Themes :
-        for_newConfig['class'] = cb.utils().obj_compare(this.themes.bootstrap.tag, config['class'],
+        for_newConfig['class'] = cb.utils.obj_combine(this.themes.bootstrap.tag, config['class'],
           ['wrap', 'prev', 'next', 'page']);
         
         // other_attr Themes :
-        for_newConfig['other_attr'] = cb.utils().obj_compare(this.themes.bootstrap.tag, config['other_attr'],
+        for_newConfig['other_attr'] = cb.utils.obj_combine(this.themes.bootstrap.tag, config['other_attr'],
           ['wrap', 'prev', 'next', 'page']);
         
         new_theme[(typeof theme_name === "string" ? theme_name : 'undef_theme')] = for_newConfig;
@@ -937,8 +923,8 @@
   
   // Config Themes :
   pagination.prototype.config_theme = function config_theme(theme_name, prop_cfg, obj) {
-    if (cb.utils().check_is_defined_obj(this.themes, theme_name)) {
-      if (cb.utils().check_is_defined_obj(obj, prop_cfg)) {
+    if (cb.utils.check_is_defined_obj(this.themes, theme_name)) {
+      if (cb.utils.check_is_defined_obj(obj, prop_cfg)) {
         if (theme_name !== 'default') {
           this.themes[theme_name][prop_cfg] = obj;
         }
