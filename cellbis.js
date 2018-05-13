@@ -26,7 +26,7 @@
   "use strict";
   
   /**
-   * A main method for Plugin Utilities :
+   * A main class for Plugin Utilities :
    */
   class Utils {
     constructor (for_utils) {
@@ -531,30 +531,19 @@
   };
   
   /**
-   * A main method to handle Extended function from
-   * external javascript.
-   */
-  let cBIS = function () {
-    return this;
-  };
-  
-  /**
    * Add prototype "sub" function into function "cBIS".
    *
-   * List of sub function :
-   * @type {
-   *  {
-   *    r_sub: r_sub,
-   *    arg1: arg1,
-   *    arg2: arg2,
-   *    arg3: arg3,
-   *  }
-   * }
+   * List of subroutine function :
+   * - r_sub(),
+   * - arg1(),
+   * - arg2(), and
+   * - arg3(),
+   *
    */
-  cBIS.prototype.sub = {
+  class Sub {
     r_sub() {
       return this.data_sub;
-    },
+    }
     arg1(obj, new_obj) {
       if (typeof new_obj === "object") {
         if (js_utils.check_is_not_defined_obj(obj, new_obj)) {
@@ -566,7 +555,7 @@
         }
       }
       return this;
-    },
+    }
     arg2(obj, src, target) {
       if (typeof src === "object" && typeof target === "object") {
         
@@ -589,7 +578,7 @@
         this.data_sub = obj;
       }
       return this;
-    },
+    }
     arg3(obj, lexical, src, target) {
       
       if (typeof lexical === "object" && typeof src === "object" && typeof target === "object") {
@@ -622,7 +611,7 @@
         this.data_sub = obj;
       }
       return this;
-    },
+    }
     argU() {
       let obj = arguments[0];
       arguments.shift();
@@ -639,16 +628,19 @@
       this.data_sub = obj;
       return this;
     }
-  };
+  }
   
   /**
-   * Add Prototype "union" function into CellBIS function.
-   * @type {string}
+   * Class for union object
+   *
+   * List of subroutine function :
+   * - r_obj() and
+   * - obj()
    */
-  cBIS.prototype.union = {
+  class Union {
     r_obj() {
       return this.data_union
-    },
+    }
     obj(src, new_obj) {
       if (typeof src === "object" && typeof new_obj === "object") {
         for (let i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
@@ -661,7 +653,18 @@
       }
       return this;
     }
-  };
+  }
+  
+  /**
+   * A main class to handle extended function on
+   * global function "cellbis"
+   */
+  class cBIS {
+    
+    sub() { return new Sub() }
+    
+    union() { return new Union() }
+  }
   
   // Little information about this JavaScript Plugin.
   cellbis.name = 'cellbis.js';
@@ -719,8 +722,8 @@
     
     // if one arguments input
     if (arguments.length === 1) {
-      defaultCbSub.sub.arg1(this_obj, arguments[0]);
-      result = defaultCbSub.sub.r_sub();
+      defaultCbSub.sub().arg1(this_obj, arguments[0]);
+      result = defaultCbSub.sub().r_sub();
     }
     
     // if two arguments input
@@ -728,8 +731,8 @@
     if (arguments.length === 2) {
       source = arguments[0];
       target = arguments[1];
-      defaultCbSub.sub.arg2(this_obj, source, target);
-      result = defaultCbSub.sub.r_sub();
+      defaultCbSub.sub().arg2(this_obj, source, target);
+      result = defaultCbSub.sub().r_sub();
     }
     
     // if three arguments input
@@ -738,8 +741,8 @@
       lexical = arguments[0];
       source = arguments[1];
       target = arguments[2];
-      defaultCbSub.sub.arg3(this_obj, lexical, source, target);
-      result = defaultCbSub.sub.r_sub();
+      defaultCbSub.sub().arg3(this_obj, lexical, source, target);
+      result = defaultCbSub.sub().r_sub();
     }
     
     return result;
@@ -747,29 +750,16 @@
   
   cellbis.union = {
     object (source, new_object) {
-      defaultCbSub.union.obj(source, new_object);
-      return defaultCbSub.union.r_obj();
+      defaultCbSub.union().obj(source, new_object);
+      return defaultCbSub.union().r_obj();
     }
   };
   
   return cellbis;
 });
 
-// CellBIS HTML UI Custom.
+// CellBIS Custom Subroutine
 (function () {
-  
-  // Anonymous function to generate custom HTML.
-  let UI = function () {
-    this.pagination = {};
-    this.form = {};
-    this.table = {};
-  };
-  
-  // Initialization HTML custom UI :
-  UI.prototype.init = function init(config) {
-    // let forPagination = new pagination();
-    // this.pagination = forPagination.init();
-  };
   
   // Add the "html" object into the CellBIS Global function
   // to add a new object under the "html" object.
