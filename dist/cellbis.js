@@ -137,16 +137,19 @@
      * @param   {number} num
      * @return  {number}
      */
-    even_num(num) {
-      return num % 2;
-    };
-  
+    even_num(num) { return num % 2 };
+    
     /**
      * Number comparison.
      * This function like : if (expr >= first && expr <= last)
+     *
+     * @param   {number}  expr
+     * @param   {number}  first
+     * @param   {number}  last
+     * @return  {boolean}
      */
     num_compare(expr, first, last) { return (expr >= first && expr <= last); }
-  
+    
     /**
      * To return data object from function argument.
      * @return {{}}
