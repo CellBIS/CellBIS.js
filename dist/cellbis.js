@@ -140,7 +140,13 @@
     even_num(num) {
       return num % 2;
     };
-    
+  
+    /**
+     * Number comparison.
+     * This function like : if (first >= expr && expr <= last)
+     */
+    num_compare(expr, first, last) { return (first >= expr && expr <= last); }
+  
     /**
      * To return data object from function argument.
      * @return {{}}
