@@ -767,8 +767,8 @@
       table() {}
     },
     Com: {
-      fileUpload() {
-      }
+      fileUpload() {},
+      WebStorage() {}
     }
   });
   
