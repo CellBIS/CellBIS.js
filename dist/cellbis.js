@@ -143,9 +143,9 @@
   
     /**
      * Number comparison.
-     * This function like : if (first >= expr && expr <= last)
+     * This function like : if (expr >= first && expr <= last)
      */
-    num_compare(expr, first, last) { return (first >= expr && expr <= last); }
+    num_compare(expr, first, last) { return (expr >= first && expr <= last); }
   
     /**
      * To return data object from function argument.
