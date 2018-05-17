@@ -142,13 +142,28 @@
     /**
      * Number comparison.
      * This function like : if (expr >= first && expr <= last)
+     * Or : if ((expr >= first || expr >= other_expr) && expr <= last)
+     * [OR] Operator support until 3 :
+     * - cb.utils.num_compare(first, last, expr, expr1);
+     * - cb.utils.num_compare(first, last, expr, expr1, expr2);
+     * - cb.utils.num_compare(first, last, expr, expr1, expr2, expr3);
      *
-     * @param   {number}  expr
      * @param   {number}  first
      * @param   {number}  last
+     * @param   {number}  expr
      * @return  {boolean}
      */
-    num_compare(expr, first, last) { return (expr >= first && expr <= last); }
+    num_compare(first, last, expr) {
+      let result;
+      let args = arguments;
+      let r_action = {
+        arg3 : (expr >= first && expr <= last),
+        arg4 : ((expr >= first || expr >= args[3]) && expr <= last),
+        arg5 : ((expr >= first || expr >= args[3] || expr >= args[4]) && expr <= last),
+        arg6 : ((expr >= first || expr >= args[3] || expr >= args[4] || expr >= args[5]) && expr <= last),
+      };
+      return r_action['arg'+args.length] ? r_action['arg'+args.length] : r_action['arg3'];
+    }
     
     /**
      * To return data object from function argument.
