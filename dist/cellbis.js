@@ -51,9 +51,7 @@
      * @param data
      * @return {number}
      */
-    check_is_defined(data) {
-      return (data !== undefined && (data !== '' || data !== "")) ? 1 : 0;
-    }
+    check_is_defined(data) { return (data !== undefined && (data !== '' || data !== "")) ? 1 : 0; }
     
     /**
      * To check if variable is not defined
@@ -61,9 +59,7 @@
      * @param data
      * @return {number}
      */
-    check_is_not_defined(data) {
-      return (data === undefined && (data === '' || data === "")) ? 1 : 0;
-    }
+    check_is_not_defined(data) { return (data === undefined && (data === '' || data === "")) ? 1 : 0; }
     
     /**
      * To check if variable object is defined
