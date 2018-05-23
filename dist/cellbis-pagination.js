@@ -21,25 +21,25 @@
   } else if (typeof module === 'object' && module.exports) {
     
     // Node/CommonJS
-    module.exports = function( root, cellBIS ) {
-      if ( cellBIS === undefined ) {
+    module.exports = function( root, cellbis ) {
+      if ( cellbis === undefined ) {
         // require('cellbis') returns a factory that requires window to
         // build a CellBIS.js instance, we normalize how we use modules
         // that require this pattern but the window provided is a noop
         // if it's defined (how cellbis works)
         if ( typeof window !== 'undefined' ) {
-          cellBIS = require('cellbis');
+          cellbis = require('cellbis');
         }
         else {
-          cellBIS = require('cellbis')(root);
+          cellbis = require('cellbis')(root);
         }
       }
-      factory(cellBIS);
-      return cellBIS;
+      factory(cellbis);
+      return cellbis;
     };
   } else {
     // Browser globals
-    factory(cellBIS);
+    factory(cellbis);
   }
 }(function (cb) {
 
