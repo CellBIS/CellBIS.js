@@ -770,8 +770,8 @@
   
   cellbis.union = {
     object (source, new_object) {
-      defaultCbSub.union().obj(source, new_object);
-      return defaultCbSub.union().r_obj();
+      let action = defaultCbSub.union().obj(source, new_object);
+      return action.r_obj();
     }
   };
   
