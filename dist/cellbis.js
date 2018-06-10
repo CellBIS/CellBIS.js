@@ -95,6 +95,20 @@
     check_data_obj(obj, prop, for_return) {
       return (obj[prop] !== undefined && (obj[prop] !== '' || obj[prop] !== "")) ? obj[prop] : for_return;
     };
+  
+    /**
+     * Replace string with or without Regex
+     *
+     * @param   {string}  string        String to replace
+     * @param   {string}  pattern       Regex or string pattern
+     * @param   {string}  replacement   Replacement of string
+     * @return  {string | undefined}
+     */
+    str_replace(string, pattern, replacement) {
+      return arguments.length === 3 ?
+        string.replace(pattern, replacement) :
+        undefined;
+    };
     
     /**
      * To compare two object
