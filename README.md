@@ -22,7 +22,7 @@ This Library under development
 
 # References during development :
 ### In the main library 
-- Behavior of [Mojolicious v7.79 -> "Mojo::Base -base"](https://metacpan.org/pod/Mojo::Base).
+- Behavior of [Mojolicious -> "Mojo::Base -base"](https://metacpan.org/pod/Mojo::Base).
 - [UMD (Universal Module Definition) Pattern Javascript ](https://github.com/umdjs/umd)
 - [jQuery](https://jquery.com/)
 
