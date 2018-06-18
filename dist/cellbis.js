@@ -95,41 +95,6 @@
     check_data_obj(obj, prop, for_return) {
       return (obj[prop] !== undefined && (obj[prop] !== '' || obj[prop] !== "")) ? obj[prop] : for_return;
     };
-  
-    /**
-     * Replace string with or without Regex
-     *
-     * @param   {string}  string        String to replace
-     * @param   {string}  pattern       Regex or string pattern
-     * @param   {string}  replacement   Replacement of string
-     * @return  {string | undefined}
-     */
-    str_replace(string, pattern, replacement) {
-      return arguments.length === 3 ?
-        string.replace(pattern, replacement) :
-        undefined;
-    };
-    
-    /**
-     * To compare two object
-     *
-     * @param src
-     * @param target
-     * @param indicator
-     */
-    obj_combine(src, target, indicator) {
-      let new_obj = {};
-      if (typeof src === "object" && typeof target === "object") {
-        if (Array.isArray(indicator)) {
-          for (let i = 0, fornew_keyObj = '', fornew_dataObj = '', length = indicator.length; i < length; i++) {
-            fornew_keyObj = indicator[i];
-            fornew_dataObj = this.check_data_obj(target, fornew_keyObj, src[fornew_keyObj]);
-            new_obj[fornew_keyObj] = fornew_dataObj;
-          }
-        }
-      }
-      return new_obj;
-    };
     
     /**
      * To check if data is founded in array
@@ -668,23 +633,56 @@
    * Class for union object
    *
    * List of subroutine function :
-   * - r_obj() and
-   * - obj()
+   * - result() and
+   * - object()
    */
   class Union {
-    r_obj() {
-      return this.data_union
+    constructor() {
+      this.type = 'object';
+      this.output = undefined;
     }
-    obj(src, new_obj) {
+    result() { return this.output }
+    object(src, new_obj) {
       if (typeof src === "object" && typeof new_obj === "object") {
         for (let i = 0, prop, value, key_obj = Object.keys(new_obj); i < key_obj.length; i++) {
           prop = key_obj[i];
           src[prop] = new_obj[prop];
         }
-        this.data_union = src;
+        this.output = src;
       } else {
-        this.data_union = {};
+        this.output = {};
       }
+      this.type = 'object';
+      return this;
+    }
+  }
+  
+  /**
+   * Class for combine object
+   *
+   * List of subroutine funciton :
+   * - result() and
+   * - object()
+   */
+  class Combine {
+    constructor() {
+      this.type = 'object';
+      this.output = undefined;
+    }
+    result() { return this.output }
+    object(src, target, indicator) {
+      let new_obj = {};
+      if (typeof src === "object" && typeof target === "object") {
+        if (Array.isArray(indicator)) {
+          for (let i = 0, fornew_keyObj = '', fornew_dataObj = '', length = indicator.length; i < length; i++) {
+            fornew_keyObj = indicator[i];
+            fornew_dataObj = js_utils.check_data_obj(target, fornew_keyObj, src[fornew_keyObj]);
+            new_obj[fornew_keyObj] = fornew_dataObj;
+          }
+        }
+      }
+      this.type = 'object';
+      this.output = new_obj;
       return this;
     }
   }
@@ -698,6 +696,8 @@
     sub() { return new Sub() }
     
     union() { return new Union() }
+    
+    combine() { return new Combine() }
   }
   
   // Little information about this JavaScript Plugin.
@@ -784,10 +784,17 @@
   
   cellbis.union = {
     object (source, new_object) {
-      let action = defaultCbSub.union().obj(source, new_object);
-      return action.r_obj();
+      let action = defaultCbSub.union().object(source, new_object);
+      return action.result();
     }
   };
+  
+  cellbis.combine = {
+    object (source, target, indicator) {
+      let action = defaultCbSub.combine().object(source, target, indicator);
+      return action.result();
+    }
+  }
   
   return cellbis;
 });
@@ -917,19 +924,19 @@
         for_newConfig['name'] = (typeof theme_name === "string" ? theme_name : 'undef_theme');
         
         // Tag Themes :
-        for_newConfig['tag'] = cb.utils.obj_combine(this.themes.bootstrap.tag, config['tag'],
+        for_newConfig['tag'] = cb.combine.object(this.themes.bootstrap.tag, config['tag'],
           ['wrap', 'prev', 'next', 'page']);
         
         // Id Themes :
-        for_newConfig['id'] = cb.utils.obj_combine(this.themes.bootstrap.tag, config['id'],
+        for_newConfig['id'] = cb.combine.object(this.themes.bootstrap.tag, config['id'],
           ['wrap', 'prev', 'next', 'page']);
         
         // Class Themes :
-        for_newConfig['class'] = cb.utils.obj_combine(this.themes.bootstrap.tag, config['class'],
+        for_newConfig['class'] = cb.combine.object(this.themes.bootstrap.tag, config['class'],
           ['wrap', 'prev', 'next', 'page']);
         
         // other_attr Themes :
-        for_newConfig['other_attr'] = cb.utils.obj_combine(this.themes.bootstrap.tag, config['other_attr'],
+        for_newConfig['other_attr'] = cb.combine.object(this.themes.bootstrap.tag, config['other_attr'],
           ['wrap', 'prev', 'next', 'page']);
         
         new_theme[(typeof theme_name === "string" ? theme_name : 'undef_theme')] = for_newConfig;
