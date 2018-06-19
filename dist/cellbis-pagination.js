@@ -448,12 +448,7 @@
       this.config_temp = {};
       
       this.type = 'standard';
-      this.active_page = 1;
       this.page_func = 0;
-      this.template = 'null';
-      
-      this.pagination_type = {};
-      this.pagination_type_selected = 0;
       
       // For current condition :
       this.api = {};
@@ -525,14 +520,12 @@
     set_target(target) { // For set target DOM
       this.target = cbUtils.check_is_defined(target) && target !== '' ? target : ''
     }
-    set_template(tmpl) { // For set html base template :
-      this.template = cbUtils.check_is_defined(tmpl) && typeof tmpl === "object" ? tmpl : 'null'
-    }
     set_type(name) { // For set type
       this.type = cbUtils.check_is_defined(name) &&
       typeof name === "string" &&
       (cbUtils.check_is_defined_obj(cb.UI.paginationType, name) !== -1)
         ? name : 'standard';
+      this.reset();
       return this;
     }
     set_pageSize(size) { // For set page count :
@@ -566,17 +559,6 @@
     // Reset Config setting
     reset() {
       this.api = cb.UI.paginationType[this.type](this.config_default, this.config_temp).init();
-    }
-    
-    // For action "render" pagination
-    render() {
-      if (this.pagination_type_selected === 1) {
-        let pagingProc = this.pagination_type();
-        pagingProc.init();
-        pagingProc.set_pageActive(this.active_page);
-        pagingProc.decision();
-        pagingProc.render();
-      }
     }
   }
   
