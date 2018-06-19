@@ -1,5 +1,5 @@
 /*!
- * CellBIS JavaScript Library v0.0.1-beta.2
+ * CellBIS JavaScript Library v0.0.1-beta.3
  * Date Create : 08 January 2018 11:15 AM
  *
  * Copyright Achmad Yusri Afandi (yusrideb@cpan.org)
@@ -702,7 +702,7 @@
   
   // Little information about this JavaScript Plugin.
   cellbis.name = 'cellbis.js';
-  cellbis.version = '0.0.1-beta.2';
+  cellbis.version = '0.0.1-beta.3';
   
   /**
    * All high-level of function "cellbis.htmlgen.*" use "htmlgen()" function.
@@ -794,178 +794,21 @@
       let action = defaultCbSub.combine().object(source, target, indicator);
       return action.result();
     }
-  }
+  };
+  
+  // For CellBIS - UI Generator
+  cellbis.UI = {
+    pagination() {},
+    paginationType: {},
+    form() {},
+    table() {}
+  };
+  
+  // For CellBIS - Component
+  cellbis.Com = {
+    fileUpload() {},
+    WebStorage() {}
+  };
   
   return cellbis;
 });
-
-// CellBIS Custom Subroutine
-(function () {
-  
-  // Add the "html" object into the CellBIS Global function
-  // to add a new object under the "html" object.
-  cellbis.sub({
-    UI: {
-      pagination() {},
-      paginationType: {},
-      form() {},
-      table() {}
-    },
-    Com: {
-      fileUpload() {},
-      WebStorage() {}
-    }
-  });
-  
-})();
-
-// CellBIS HTML UI Custom - Pagination.
-(function () {
-  
-  // Anonymous function to generate pagination page.
-  let pagination = function () {
-    
-    this.themes = {
-      default: {
-        name: 'default',
-        tag: {
-          wrap: 'ul', prev: 'li', next: 'li', page: 'li'
-        },
-        id: {
-          wrap: '', prev: '', next: '', page: ''
-        },
-        class: {
-          wrap: '', prev: '', next: '', page: ''
-        },
-        other_attr: {
-          wrap: '', prev: '', next: '', page: ''
-        }
-      },
-      bootstrap: {
-        name: 'bootstrap',
-        tag: {
-          wrap: 'ul', prev: 'li', next: 'li', page: 'li'
-        },
-        id: {
-          wrap: '', prev: '', next: '', page: ''
-        },
-        class: {
-          wrap: '', prev: '', next: '', page: ''
-        },
-        other_attr: {
-          wrap: '', prev: '', next: '', page: ''
-        }
-      }
-    };
-    this.config = {
-      first: true,
-      last: true
-    };
-    this.label = {
-      firstPage: 'First',
-      lastPage: 'Last',
-      prev: 'Previous',
-      next: 'Next'
-    };
-    this.first = true;
-    this.last = true;
-    this.prev = true;
-    this.next = true;
-    this.amount_pages = 5;
-    this.defaultAmount_pages = 5;
-    this.firstAmount_pages = 5;
-    this.currentPage = 1;
-    this.theme_active = 'default';
-    this.method = {};
-  };
-  
-  // Prototype for initialization function "pagination"
-  pagination.prototype.init = function init(config) {
-    
-    if (config) {
-      this.method = cb.utils.check_is_defined_obj(config, 'method') ? config.method : this.method;
-      this.first = cb.utils.check_is_defined_obj(config, 'firstPage') ? config.firstPage : this.firstPage;
-      this.last = cb.utils.check_is_defined_obj(config, 'lastPage') ? config.lastPage : this.lastPage;
-      this.prev = cb.utils.check_is_defined_obj(config, 'prev') ? config.prev : this.prev;
-      this.next = cb.utils.check_is_defined_obj(config, 'next') ? config.next : this.next;
-      this.amount_pages = cb.utils.check_is_defined_obj(config, 'amount_pages') ?
-        config.amount_pages : this.amount_pages;
-      this.defaultAmount_pages = cb.utils.check_is_defined_obj(config, 'defaultAmount_pages') ?
-        config.defaultAmount_pages : this.defaultAmount_pages;
-      this.firstAmount_pages = cb.utils.check_is_defined_obj(config, 'firstAmount_pages') ?
-        config.firstAmount_pages : this.firstAmount_pages;
-      this.currentPage = cb.utils.check_is_defined_obj(config, 'currentPage') ?
-        config.currentPage : this.currentPage;
-      this.themes = cb.utils.check_is_defined_obj(config, 'themes') ? config.themes : this.themes;
-      this.theme_active = cb.utils.check_is_defined_obj(config, 'theme_active') ? config.theme_active : this.theme_active;
-    }
-    return this;
-  };
-  
-  // Set theme :
-  pagination.prototype.set_theme = function set_theme(theme_name) {
-    if (theme_name && theme_name !== "") {
-      if (cb.utils.check_is_defined_obj(this.themes, theme_name)) {
-        this.theme_active = theme_name;
-      }
-    }
-    return this;
-  };
-  
-  // Add new theme :
-  pagination.prototype.add_theme = function add_themes(theme_name, config, validate) {
-    if (typeof config === "object") {
-      let new_theme = {};
-      
-      if (validate) {
-        let for_newConfig = {};
-        
-        // Name Themes :
-        for_newConfig['name'] = (typeof theme_name === "string" ? theme_name : 'undef_theme');
-        
-        // Tag Themes :
-        for_newConfig['tag'] = cb.combine.object(this.themes.bootstrap.tag, config['tag'],
-          ['wrap', 'prev', 'next', 'page']);
-        
-        // Id Themes :
-        for_newConfig['id'] = cb.combine.object(this.themes.bootstrap.tag, config['id'],
-          ['wrap', 'prev', 'next', 'page']);
-        
-        // Class Themes :
-        for_newConfig['class'] = cb.combine.object(this.themes.bootstrap.tag, config['class'],
-          ['wrap', 'prev', 'next', 'page']);
-        
-        // other_attr Themes :
-        for_newConfig['other_attr'] = cb.combine.object(this.themes.bootstrap.tag, config['other_attr'],
-          ['wrap', 'prev', 'next', 'page']);
-        
-        new_theme[(typeof theme_name === "string" ? theme_name : 'undef_theme')] = for_newConfig;
-        
-      } else {
-        new_theme[(typeof theme_name === "string" ? theme_name : 'undef_theme')] = config;
-      }
-      
-      // Union object "theme" :
-      cb.union.object(this.themes, new_theme);
-      
-      return this;
-    }
-  };
-  
-  // Config Themes :
-  pagination.prototype.config_theme = function config_theme(theme_name, prop_cfg, obj) {
-    if (cb.utils.check_is_defined_obj(this.themes, theme_name)) {
-      if (cb.utils.check_is_defined_obj(obj, prop_cfg)) {
-        if (theme_name !== 'default') {
-          this.themes[theme_name][prop_cfg] = obj;
-        }
-      }
-    }
-    return this;
-  };
-  
-  pagination.prototype.render = function render() {
-  
-  };
-  
-})();
