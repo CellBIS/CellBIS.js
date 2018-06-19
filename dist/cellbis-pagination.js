@@ -294,6 +294,10 @@
       this.config['pageActive'] = cbUtils.check_is_defined(activePage) && activePage !== 0 ?
         activePage : this.config['pageActive'];
     }
+    set_pageSize(pageSize) {
+      this.config['pageSize'] = cbUtils.check_is_defined(pageSize) && pageSize !== 0 ?
+        pageSize : this.config['pageSize'];
+    }
     set_pageFunc(func) {
       this.config['pageFunc'] = cbUtils.check_is_defined(func) && func !== 0 ?
         func : this.config['pageFunc'];
@@ -525,14 +529,8 @@
       typeof name === "string" &&
       (cbUtils.check_is_defined_obj(cb.UI.paginationType, name) !== -1)
         ? name : 'standard';
-      this.reset();
+      this.api_update();
       return this;
-    }
-    set_pageSize(size) { // For set page count :
-      this.page_size = cbUtils.check_is_defined(size) && typeof size === "number" && size !== 0 ? size : 10;
-    }
-    set_pageFunc(func) { // For set page functionality :
-      this.page_func = cbUtils.check_is_defined(func) && typeof func === "object" ? func : this.page_func;
     }
     
     // Execute Pagination API
