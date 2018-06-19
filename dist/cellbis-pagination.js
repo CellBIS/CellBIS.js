@@ -8,11 +8,13 @@
  *
  */
 
-/**
- * Uses CommonJS, AMD or browser globals to create a CellBIS.js Plugin.
- * This transplantation from UMD jqueryPlugin Template :
- * https://github.com/umdjs/umd/blob/master/templates/jqueryPlugin.js
- */
+// Uses CommonJS, AMD or browser globals to create a CellBIS.js Plugin.
+// This transplantation from :
+// https://github.com/umdjs/umd/blob/master/templates/jqueryPlugin.js
+//
+// To get to know more about the Universal Module Definition
+// visit: https://github.com/umdjs/umd
+//
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     
@@ -59,10 +61,10 @@
         normal: '<button class="w3-bar-item cb-button cb-btn-biru"{{attr}}>{{value}}</button>',
         active: '<button class="w3-bar-item cb-button cb-btn-biru active"{{attr}}>{{value}}</button>',
         sep: '<button class="w3-bar-item cb-button cb-btn-biru"{{attr}}>{{value}}</button>',
-        first: '<button class="w3-bar-item cb-button cb-btn-merah"{{attr}}>{{value}}</button>',
-        last: '<button class="w3-bar-item cb-button cb-btn-merah"{{attr}}>{{value}}</button>',
-        prev: '<button class="w3-bar-item cb-button cb-btn-merah"{{attr}}>{{value}}</button>',
-        next: '<button class="w3-bar-item cb-button cb-btn-merah"{{attr}}>{{value}}</button>',
+        first: '<button class="w3-bar-item cb-button cb-btn-biru"{{attr}}>{{value}}</button>',
+        last: '<button class="w3-bar-item cb-button cb-btn-biru"{{attr}}>{{value}}</button>',
+        prev: '<button class="w3-bar-item cb-button cb-btn-biru"{{attr}}>{{value}}</button>',
+        next: '<button class="w3-bar-item cb-button cb-btn-biru"{{attr}}>{{value}}</button>',
       };
       this.after_decision = 0;
       this.result = {
@@ -261,6 +263,13 @@
       return result;
     }
     
+    // For set config
+    set_config(config) {
+      let indicator = ['pageSource', 'pageLabel', 'pageFunc', 'method', 'pageDisplay', 'pageSize', 'pageActive'];
+      this.config = cbUtils.check_is_defined(config) && typeof config === "object" ?
+        cb.combine.object(this.config, config, indicator) : this.config
+    }
+    
     /** Function for set config */
     set_template(...args) {
       if (args.length >= 8) {
@@ -393,7 +402,6 @@
       let _check = self.result.object;
       _check['active'] = _check['type'] === 'default-page' ? 1 : _check['active'];
       let data_array = _check['data'];
-      console.log(_check);
       
       // For Render to HTML
       let data_html = '';
@@ -441,12 +449,14 @@
       
       this.type = 'standard';
       this.active_page = 1;
-      this.page_size = 1;
       this.page_func = 0;
       this.template = 'null';
       
       this.pagination_type = {};
       this.pagination_type_selected = 0;
+      
+      // For current condition :
+      this.api = {};
     }
     
     // For Initialization :
@@ -502,16 +512,18 @@
       this.config_temp = config;
       this.type = cbUtils.check_is_defined_obj(cb.UI.paginationType, type)
       && typeof type === "string" ? type : 'standard';
+      let API = cb.UI.paginationType[this.type](this.config_default, this.config_temp);
+      this.api = API.init();
       
       return this;
     }
     
+    // For API Re-Init
+    api_reinit() { this.api = this.api.init(); }
+    
     /** Function for set config */
     set_target(target) { // For set target DOM
       this.target = cbUtils.check_is_defined(target) && target !== '' ? target : ''
-    }
-    set_config(config) { // For set config pagination
-      this.config_temp = cbUtils.check_is_defined(config) && typeof config === "object" ? config : this.config_default
     }
     set_template(tmpl) { // For set html base template :
       this.template = cbUtils.check_is_defined(tmpl) && typeof tmpl === "object" ? tmpl : 'null'
@@ -529,33 +541,31 @@
     set_pageFunc(func) { // For set page functionality :
       this.page_func = cbUtils.check_is_defined(func) && typeof func === "object" ? func : this.page_func;
     }
-    page_active(page) { // For set "active page"
-      this.active_page = cbUtils.check_is_defined(page) && typeof page === "number" ? page : 1;
-    }
-    
-    // Set pagination type for activated API
-    API() { return cb.UI.paginationType[this.type](this.config_default, this.config_temp) }
     
     // Execute Pagination API
     execute() {
-      let API = this.API();
-      API.init();
+      let API = this.api;
+      // API.init();
       
       // Several config settings
       API.target = this.target;
-      if (typeof this.page_func === "object") API.set_pageFunc(this.page_func);
-      if (this.template !== 'null') API.set_template(this.template);
-      if (this.active_page !== 1) API.set_pageActive(this.active_page);
       API.decision();
       this.config = API.config;
       
-      if (typeof this.config.method.execute === "function") this.config.method.execute(API);
-      console.log(this.config.method);
-      
-      // Clear config settings
-      this.active_page = 1;
-      this.page_func = this.config_temp.pageFunc;
-      this.template = 'null';
+      // For check method "execute"
+      if (cbUtils.check_is_defined_obj(this.config.method, 'execute')
+        && typeof this.config.method.execute === "function") {
+        this.config.method.execute(API);
+        // console.log(this.config.method);
+      } else {
+        API.render('html');
+        // console.log(API.config);
+      }
+    }
+    
+    // Reset Config setting
+    reset() {
+      this.api = cb.UI.paginationType[this.type](this.config_default, this.config_temp).init();
     }
     
     // For action "render" pagination
