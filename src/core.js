@@ -1,5 +1,5 @@
 /*!
- * CellBIS JavaScript Library v0.0.1-beta.3
+ * CellBIS JavaScript Library v0.0.1-beta.4
  * Date Create : 08 January 2018 11:15 AM
  *
  * Copyright Achmad Yusri Afandi (yusrideb@cpan.org)
@@ -702,7 +702,7 @@
   
   // Little information about this JavaScript Plugin.
   cellbis.name = 'cellbis.js';
-  cellbis.version = '0.0.1-beta.3';
+  cellbis.version = '0.0.1-beta.4';
   
   /**
    * All high-level of function "cellbis.htmlgen.*" use "htmlgen()" function.
