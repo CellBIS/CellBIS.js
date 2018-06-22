@@ -25,6 +25,10 @@
 })(this, function (cellbis) {
   "use strict";
   
+  // For detection browser
+  let isBrowser = typeof window !== 'undefined'
+    && ({}).toString.call(window) === '[object Window]';
+  
   /**
    * A main class for Plugin Utilities :
    */
@@ -36,7 +40,7 @@
       }
       
       // For URL Protocol
-      if (!global) {
+      if (isBrowser === undefined) {
         this.protocol = location.protocol;
         let locProtocol = this.protocol;
         this.protocol_prod = locProtocol.match(/http/) ? 'http://' : this.protocol + '//';
@@ -174,7 +178,7 @@
    * A main method for Browser Storage/Cache
    */
   let Browser_storage = function () {
-    if (!global) this.local_data = localStorage;
+    if (isBrowser) this.local_data = localStorage;
     return this;
   };
   
