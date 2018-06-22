@@ -98,7 +98,7 @@
      *
      * @param {object}          data_json
      * @param {string|object}   target
-     * @return {htmlgen}
+     * @return {HTML_generator}
      */
     init(data_json, target) {
       
