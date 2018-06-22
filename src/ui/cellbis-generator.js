@@ -1,5 +1,5 @@
 /*! 
- * Filename : cellbis-hgen.min.js
+ * Filename : cellbis-generator.min.js
  * Author: Achmad Yusri Afandi (yusrideb@cpan.org)
  * Date Create : 6/22/18 9:08 PM
  *
@@ -101,7 +101,7 @@
      * @return {htmlgen}
      */
     init(data_json, target) {
-    
+      
       // For Target Tag :
       if (cbUtils.check_is_defined(target)) {
         if (typeof target === "object") {
@@ -115,7 +115,7 @@
         this.type_target = '';
         this.target_tag = '';
       }
-    
+      
       if (cbUtils.check_is_defined(data_json) && typeof data_json === "object") {
         if (Array.isArray(data_json)) {
           this.data_html = this.array_type(data_json);
@@ -134,7 +134,7 @@
      * @return  {HTML_generator}
      */
     set_target(target) {
-    
+      
       // For Target Tag :
       if (cbUtils.check_is_defined(target)) {
         if (typeof target === "object") {
@@ -158,7 +158,7 @@
      * @return  {HTML_generator}
      */
     set(data_json) {
-    
+      
       if (cbUtils.check_is_defined(data_json) && typeof data_json === "object") {
         if (Array.isArray(data_json)) {
           this.data_html = this.array_type(data_json);
@@ -168,7 +168,7 @@
       }
       return this;
     }
-  
+    
     /**
      * Object function prototype for generate html for object array :
      *
@@ -191,10 +191,10 @@
      * @param data_json
      * @return {string}
      */
-    array_prototype(data_json) {
-  
+    array_type(data_json) {
+      
       let data_tag = '';
-  
+      
       if (data_json.length > 1) {
         let i = 0;
         let until = data_json.length;
@@ -207,10 +207,10 @@
           data_tag = this.generate(data_json[0]);
         }
       }
-  
+      
       return data_tag;
     }
-  
+    
     /**
      * Object function prototype for generate single HTML tag.
      *
@@ -237,15 +237,15 @@
      */
     generate(data_json) {
       let result = '';
-    
-      if (cbUtils.check_is_defined_obj(data_json, 'tag')) {
       
+      if (cbUtils.check_is_defined_obj(data_json, 'tag')) {
+        
         // Declare variable :
         let prop = Object.keys(data_json);
         let i = 0, len = prop.length;
         let tag_attr;
         let data_attr = '';
-      
+        
         // To Check if tag is "Singleton"
         let tag_name = data_json['tag'];
         while (i < len) {
@@ -258,7 +258,7 @@
               tag_attr !== 'child' &&
               tag_attr !== ''
             ) {
-            
+              
               data_attr += tag_attr + '="' + data_json[prop[i]] + '" ';
             }
             if (tag_attr === 'attr') {
@@ -267,12 +267,12 @@
           }
           i++;
         }
-      
+        
         if (cbUtils.inArray(tag_name, this.tag_singleton) !== -1) {
           result = '<' + tag_name + ' ' + data_attr + '/>'
         } else {
           result = '<' + tag_name + ' ' + data_attr + '>' + '';
-        
+          
           if (cbUtils.check_is_defined_obj(data_json, 'contents')) {
             if (cbUtils.check_is_defined_obj(data_json, 'child')) {
               if (Array.isArray(data_json['child'])) {
@@ -289,16 +289,16 @@
               }
             }
           }
-        
+          
           result += '</' + tag_name + '>';
         }
       } else {
         console.log('property "tag" is undefined')
       }
-    
+      
       return result;
     }
-  
+    
     /**
      * To render HTML.
      *
@@ -306,7 +306,7 @@
      */
     render() {
       let result;
-    
+      
       if (this.type_target === 'object') {
         let target = this.target_tag;
         if (
@@ -337,7 +337,7 @@
           result = this.data_html;
         }
       }
-    
+      
       return result;
     }
   }
