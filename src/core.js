@@ -36,13 +36,15 @@
       }
       
       // For URL Protocol
-      this.protocol = location.protocol;
-      let locProtocol = this.protocol;
-      this.protocol_prod = locProtocol.match(/http/) ? 'http://' : this.protocol + '//';
-      
-      // For  URL protocol string :
-      let regexProtoString = /\:/g;
-      this.protocol_string = locProtocol.replace(regexProtoString, '');
+      if (!global) {
+        this.protocol = location.protocol;
+        let locProtocol = this.protocol;
+        this.protocol_prod = locProtocol.match(/http/) ? 'http://' : this.protocol + '//';
+        
+        // For  URL protocol string :
+        let regexProtoString = /\:/g;
+        this.protocol_string = locProtocol.replace(regexProtoString, '');
+      }
     }
     
     /**
@@ -156,7 +158,7 @@
       }
       if (len_arg > 1) {
         for (let i = 0; i < len_arg; i++) {
-          Utils.even_num(i) === 0 ?
+          this.even_num(i) === 0 ?
             obj[arguments[i]] = arguments[(i + 1)] :
             obj[arguments[(i - 1)]] = arguments[i];
         }
@@ -172,7 +174,7 @@
    * A main method for Browser Storage/Cache
    */
   let Browser_storage = function () {
-    this.local_data = localStorage;
+    if (!global) this.local_data = localStorage;
     return this;
   };
   
@@ -611,12 +613,12 @@
       }
       return this;
     }
-    argU() {
-      let obj = arguments[0];
-      arguments.shift();
+    argU(...args) {
+      let obj = args[0];
+      args.shift();
       
-      for (let a = 0, input; a < arguments.length; a++) {
-        input = arguments[a];
+      for (let a = 0, input; a < args.length; a++) {
+        input = args[a];
         if (typeof input === "object") {
           for (let b = 0, prop, value, key_input = Object.keys(input); b < key_input.length; b++) {
             prop = key_input[b];
