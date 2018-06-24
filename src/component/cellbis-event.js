@@ -1,5 +1,5 @@
 /*! 
- * Filename : cellbis-event.min.js
+ * Filename : cellbis-event.js
  * Author: Achmad Yusri Afandi (yusrideb@cpan.org)
  * Date Create : 6/22/18 7:27 PM
  *

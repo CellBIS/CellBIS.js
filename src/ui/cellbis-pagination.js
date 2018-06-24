@@ -1,5 +1,5 @@
 /*!
- * Filename : cellbis-pagination.min.js
+ * Filename : cellbis-pagination.js
  * Author: Achmad Yusri Afandi (yusrideb@cpan.org)
  * Date Create : 4/17/18 7:32 AM
  *

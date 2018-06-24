@@ -1,11 +1,7 @@
 /*! 
- * Filename : cellbis-selector.min.js
+ * Filename : cellbis-selector.js
  * Author: Achmad Yusri Afandi (yusrideb@cpan.org)
  * Date Create : 6/23/18 3:22 PM
- *
- * Copyright Achmad Yusri Afandi (yusrideb@cpan.org)
- * Released under the Artistic License 2.0
- *
  */
 
 (function( global, factory ) {
@@ -13,24 +9,24 @@
   /* jshint strict: false */ /*globals define, module, require */
   if ( typeof define === 'function' && define.amd ) {
     // AMD
-    define( ['cellbisQ'], factory );
+    define( ['cellbisS'], factory );
   } else if ( typeof module === 'object' && module.exports ) {
     // CommonJS
     module.exports = factory(
-      require('cellbisQ')
+      require('cellbisS')
     );
   } else {
     // browser global
-    global.cellbisQ = factory(
+    global.cellbisS = factory(
       global.cellbis,
-      global.cellbisQ
+      global.cellbisS
     );
-    global.cbq = cellbisQ;
+    global.cbS = cellbisS;
   }
   
-}( this, function factory( cellbis, cellbisq ) {
+}( this, function factory( cellbis, cellbiss ) {
   
   
   
-  return cellbisq;
+  return cellbiss;
 }));
