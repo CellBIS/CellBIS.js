@@ -42,11 +42,11 @@
     // Browser globals
     factory(cellbis);
   }
-}(function (cb) {
+}(function (cellbis) {
   
   "use strict";
   
-  let cbUtils = cb.utils;
+  let cbUtils = cellbis.utils;
   
   // A main class for "pageStandard" type pagination.
   class PageStandard {
@@ -305,13 +305,13 @@
     set_config(config) {
       let indicator = ['pageSource', 'pageLabel', 'pageFunc', 'method', 'pageDisplay', 'pageSize', 'pageActive'];
       this.config = cbUtils.check_is_defined(config) && typeof config === "object" ?
-        cb.combine.object(this.config, config, indicator) : this.config;
+        cellbis.combine.object(this.config, config, indicator) : this.config;
     }
     
     // Add theme
     _template_check(template) {
       let indicator = ['wrap', 'normal', 'active', 'sep', 'first', 'last', 'prev', 'next'];
-      return cb.combine.object(this.theme.w3css.template, template, indicator);
+      return cellbis.combine.object(this.theme.w3css.template, template, indicator);
     }
     add_theme(name, color, template) {
       let new_theme = {};
@@ -320,7 +320,7 @@
         new_theme[name].color = color;
         new_theme[name].template = this._template_check(template);
       }
-      this.theme = cb.union.object(this.theme, new_theme);
+      this.theme = cellbis.union.object(this.theme, new_theme);
     }
     
     /** Function for set config */
@@ -344,7 +344,7 @@
       }
       if (args.length === 1 && typeof args[0] === "object") {
         let indicator = ['wrap','active','normal','sep','first','last','prev','next'];
-        this.template = cb.combine.object(this.template, args[0], indicator);
+        this.template = cellbis.combine.object(this.template, args[0], indicator);
       }
       return this;
     }
@@ -509,7 +509,7 @@
   }
   
   // For Add Type Pagination
-  cb.union.object(cb.UI.paginationType, {
+  cellbis.union.object(cellbis.UI.paginationType, {
     standard: function (config_default, config_temp) {
       return new PageStandard(config_default, config_temp);
     }
@@ -517,11 +517,11 @@
   
 }));
 
-// Main function for "cb.pagination".
+// Main function for "cellbis.pagination".
 (function () {
   "use strict";
   
-  let cbUtils = cb.utils;
+  let cbUtils = cellbis.utils;
   
   // For Main Pagination Class
   class Pagination {
@@ -594,9 +594,9 @@
       
       this.target = target;
       this.config_temp = config;
-      this.type = cbUtils.check_is_defined_obj(cb.UI.paginationType, type)
+      this.type = cbUtils.check_is_defined_obj(cellbis.UI.paginationType, type)
       && typeof type === "string" ? type : 'standard';
-      let API = cb.UI.paginationType[this.type](this.config_default, this.config_temp);
+      let API = cellbis.UI.paginationType[this.type](this.config_default, this.config_temp);
       this.api = API.init();
       
       return this;
@@ -612,7 +612,7 @@
     set_type(name) { // For set type
       this.type = cbUtils.check_is_defined(name) &&
       typeof name === "string" &&
-      (cbUtils.check_is_defined_obj(cb.UI.paginationType, name) !== -1)
+      (cbUtils.check_is_defined_obj(cellbis.UI.paginationType, name) !== -1)
         ? name : 'standard';
       this.reset();
     }
@@ -636,12 +636,12 @@
     
     // Reset Config setting
     reset() {
-      this.api = cb.UI.paginationType[this.type](this.config_default, this.config_temp).init();
+      this.api = cellbis.UI.paginationType[this.type](this.config_default, this.config_temp).init();
     }
   }
   
-  // Modification cb.UI.pagination
-  cb.UI.pagination = function (...arg) {
+  // Modification cellbis.UI.pagination
+  cellbis.UI.pagination = function (...arg) {
     let initPagination = new Pagination();
     return initPagination.init(...arg);
   };

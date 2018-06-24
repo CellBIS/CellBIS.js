@@ -43,11 +43,11 @@
     // Browser globals
     factory(cellbis);
   }
-}(function (cb) {
+}(function (cellbis) {
   
   "use strict";
   
-  let cbUtils = cb.utils;
+  let cbUtils = cellbis.utils;
   
   /**
    * A main class to handle HTML Generator.
@@ -342,8 +342,8 @@
     }
   }
   
-  // Register cb.hgen to initialization class "HTML_generator"
-  cb.hgen = function(data_json, target) {
+  // Register cellbis.hgen to initialization class "HTML_generator"
+  cellbis.hgen = function(data_json, target) {
     let htmlgen = new HTML_generator();
     return htmlgen.init(data_json, target);
   }
