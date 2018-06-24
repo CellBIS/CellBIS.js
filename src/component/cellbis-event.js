@@ -43,6 +43,6 @@
     // Browser globals
     factory(cellbis);
   }
-}(function (cb) {
+}(function (cellbis) {
 
 }));
