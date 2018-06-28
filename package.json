@@ -1,0 +1,28 @@
+{
+  "name": "CellBIS.js",
+  "version": "0.0.1",
+  "description": "CellBIS JavaScript Library",
+  "directories": {
+    "doc": "./docs",
+    "src": "./src"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CellBIS/CellBIS.js.git"
+  },
+  "keywords": [
+    "cellbis",
+    "javascript",
+    "library",
+    "browser"
+  ],
+  "author": "Achmad Yusri Afandi <yusrideb@cpan.org>",
+  "license": "Artistic-2.0",
+  "bugs": {
+    "url": "https://github.com/CellBIS/CellBIS.js/issues"
+  },
+  "homepage": "https://github.com/CellBIS/CellBIS.js#readme"
+}
