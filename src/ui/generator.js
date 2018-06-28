@@ -1,5 +1,5 @@
 /*! 
- * Filename : cellbis-generator.js
+ * Filename : generator.js
  * Author: Achmad Yusri Afandi (yusrideb@cpan.org)
  * Date Create : 6/22/18 9:08 PM
  *
