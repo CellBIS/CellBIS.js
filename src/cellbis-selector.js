@@ -4,29 +4,11 @@
  * Date Create : 6/23/18 3:22 PM
  */
 
-(function( global, factory ) {
-  // universal module definition
-  /* jshint strict: false */ /*globals define, module, require */
-  if ( typeof define === 'function' && define.amd ) {
-    // AMD
-    define( ['cellbisS'], factory );
-  } else if ( typeof module === 'object' && module.exports ) {
-    // CommonJS
-    module.exports = factory(
-      require('cellbisS')
-    );
-  } else {
-    // browser global
-    global.cellbisS = factory(
-      global.cellbis,
-      global.cellbisS
-    );
-    global.cbS = cellbisS;
-  }
+define( function() { //@START
   
-}( this, function factory( cellbis, cellbiss ) {
+  "use strict";
   
+  let cellbisS = {};
   
-  
-  return cellbiss;
-}));
+  return cellbisS;
+}); //@END
